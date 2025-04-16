@@ -1,15 +1,15 @@
 const express = require('express');
+const path = require('path');
+
 const app = express();
-const port = 5000;
 
-// Middleware for JSON
-app.use(express.json());
+// Serve static files from the 'client' folder
+app.use(express.static(path.join(__dirname, 'client')));
 
-// Basic route
+// Root route → redirect to index.html in client folder
 app.get('/', (req, res) => {
-  res.send('Hello, this is the Smart Product Scanner API!');
+  res.sendFile(path.join(__dirname, 'client', 'index.html'));
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
