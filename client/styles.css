@@ -1,0 +1,85 @@
+/* =========================== / / INDEX PAGE / / =========================== */
+
+.index-header { background-color: #4CAF50; color: white; text-align: center; padding: 2rem; }
+
+.index-buttons { display: flex; flex-direction: column; gap: 1rem; margin-top: 2rem; }
+
+.index-about { margin-top: 3rem; text-align: center; font-size: 1rem; color: #555; }
+
+/* =========================== / / LOGIN PAGE / / =========================== */
+
+.login-form { max-width: 400px; margin: 2rem auto; }
+
+.login-form h2 { margin-bottom: 1rem; color: #333; }
+
+.login-form .btn { margin-top: 1rem; }
+
+/* =========================== / / SIGNUP PAGE / / =========================== */
+
+.signup-form { max-width: 400px; margin: 2rem auto; }
+
+.signup-form h2 { margin-bottom: 1rem; color: #333; }
+
+.signup-form .btn { margin-top: 1rem; }
+
+/* =========================== / / HOME PAGE / / =========================== */
+
+.home-container { text-align: center; padding: 2rem 1rem; }
+
+.home-title { font-size: 1.5rem; margin-bottom: 2rem; }
+
+.scan-button { padding: 1rem; background-color: #4CAF50; color: white; border: none; border-radius: 12px; font-size: 1.2rem; cursor: pointer; }
+
+.footer-nav { position: fixed; bottom: 0; width: 100%; max-width: 480px; display: flex; justify-content: space-around; background-color: #fff; border-top: 1px solid #ccc; padding: 0.5rem 0; }
+
+.footer-nav a { text-decoration: none; color: #4CAF50; font-size: 1rem; }
+
+/* =========================== / / SCAN PAGE / / =========================== */
+
+.scan-page { text-align: center; padding: 2rem; }
+
+.scan-camera { width: 100%; height: 240px; background-color: #ddd; border-radius: 10px; margin-bottom: 2rem; display: flex; align-items: center; justify-content: center; color: #666; }
+
+/* =========================== / / PROFILE PAGE / / =========================== */
+
+.profile-page { padding: 2rem; }
+
+.profile-page h2 { margin-bottom: 1.5rem; color: #333; }
+
+.profile-info p { margin-bottom: 1rem; color: #555; }
+
+/* =========================== / / HISTORY PAGE / / =========================== */
+
+.history-page { padding: 2rem; }
+
+.history-item { background-color: #fff; padding: 1rem; margin-bottom: 1rem; border-radius: 8px; box-shadow: 0 1px 5px rgba(0,0,0,0.05); }
+
+/* =========================== / / SETTINGS PAGE / / =========================== */
+
+.settings-page { padding: 2rem; }
+
+.settings-page h2 { margin-bottom: 1rem; }
+
+.settings-option { margin: 1rem 0; }
+
+.settings-option label { display: block; margin-bottom: 0.5rem; }
+
+/* =========================== / / SHARED STYLES / / =========================== */
+
+body { margin: 0; font-family: 'Segoe UI', sans-serif; background-color: #f9f9f9; color: #222; padding-bottom: 70px; /* space for footer nav */ }
+
+input, button, select { width: 100%; padding: 0.8rem; margin: 0.5rem 0; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+
+.btn { background-color: #4CAF50; color: white; font-weight: bold; border: none; border-radius: 8px; padding: 0.8rem; cursor: pointer; }
+
+.btn:hover { background-color: #45a049; }
+
+/* =========================== / / RESPONSIVENESS / / =========================== */
+
+@media (max-width: 480px) { .container, .login-form, .signup-form, .home-container, .scan-page, .profile-page, .history-page, .settings-page { padding: 1rem; }
+
+.btn, input { font-size: 1rem; }
+
+.scan-camera { height: 200px; }
+
+.footer-nav a { font-size: 0.9rem; } }

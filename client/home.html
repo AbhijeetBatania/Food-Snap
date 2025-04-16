@@ -1,0 +1,32 @@
+<!-- home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home - FoodSnap</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="home-container">
+    <h2>Welcome to FoodSnap</h2>
+    <div class="scan-section">
+      <button class="scan-button" onclick="startScan()">
+        📷 Scan Product
+      </button>
+    </div>
+  </div>
+  <footer class="bottom-nav">
+    <a href="home.html" class="nav-link active">🏠 Home</a>
+    <a href="scan.html" class="nav-link">📷 Scan</a>
+    <a href="history.html" class="nav-link">🕘 History</a>
+    <a href="settings.html" class="nav-link">⚙️ Settings</a>
+    <a href="profile.html" class="nav-link">👤 Profile</a>
+  </footer>
+  <script>
+    function startScan() {
+      window.location.href = 'scan.html';
+    }
+  </script>
+</body>
+</html>
