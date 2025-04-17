@@ -1,32 +1,183 @@
-<!-- home.html -->
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home - FoodSnap</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <div class="home-container">
-    <h2>Welcome to FoodSnap</h2>
-    <div class="scan-section">
-      <button class="scan-button" onclick="startScan()">
-        📷 Scan Product
-      </button>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Scan: Nutrition Hub</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Add Lovable script tag -->
+    <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+  </head>
+  <body>
+    <div class="app-container">
+      <!-- Header - shortened -->
+      <header class="header">
+        <div class="logo">
+          <div class="logo-icon">F</div>
+          <h1>FoodSnap</h1>
+        </div>
+        <div class="menu-button">
+          <button class="icon-button" aria-label="Menu" id="menuButton">
+            <i class="fa-solid fa-ellipsis-vertical"></i>
+          </button>
+        </div>
+      </header>
+      
+      <!-- Search Bar -->
+      <div class="search-container">
+        <div class="search-bar">
+          <i class="fa-solid fa-search search-icon"></i>
+          <input type="text" placeholder="Search food items..." class="search-input">
+          <button class="mic-button"><i class="fa-solid fa-microphone"></i></button>
+        </div>
+      </div>
+      
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+          <h1>Discover What's in Your Food</h1>
+          <p>Scan product labels to instantly access nutritional information and make healthier choices.</p>
+        </section>
+
+        <!-- Health Tip as a separate section -->
+        <div class="health-tip">
+          <div class="tip-header">
+            <i class="fa-solid fa-heart"></i>
+            <h3>Tip of the Day</h3>
+          </div>
+          <p id="dailyTip">Stay hydrated! Drink at least 8 glasses of water per day.</p>
+        </div>
+        
+        <!-- Single Column Layout for mobile -->
+        <div class="single-column-layout">
+          <!-- Recently Scanned Section -->
+          <section class="card recently-scanned">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-history"></i> Recent</h3>
+              <button class="text-button">View All</button>
+            </div>
+            <div class="scanned-items">
+              <div class="scanned-item">
+                <div class="item-header">
+                  <span>Greek Yogurt</span>
+                  <span class="date">Today</span>
+                </div>
+                <p>Protein: 15g, Sugar: 6g</p>
+              </div>
+              <div class="scanned-item">
+                <div class="item-header">
+                  <span>Almond Milk</span>
+                  <span class="date">Yesterday</span>
+                </div>
+                <p>Calories: 30, Fat: 2.5g</p>
+              </div>
+              <div class="scanned-item">
+                <div class="item-header">
+                  <span>Protein Bar</span>
+                  <span class="date">2 days ago</span>
+                </div>
+                <p>Protein: 20g, Carbs: 22g</p>
+              </div>
+            </div>
+          </section>
+          
+          <!-- Knowledge Hub -->
+          <section class="card knowledge-hub">
+            <div class="card-header">
+              <h3><i class="fa-solid fa-book-open"></i> Knowledge Hub</h3>
+            </div>
+            
+            <div class="knowledge-articles" id="knowledgeArticles">
+              <div class="article" id="article1">
+                <h4>Understanding Labels</h4>
+                <p>Food labels provide essential information about the nutritional content of packaged foods.</p>
+                <div class="article-meta">
+                  <span>3 min read</span>
+                </div>
+              </div>
+              
+              <div class="article" id="article2">
+                <h4>Processed Foods</h4>
+                <p>Discover how processed foods affect your body and what alternatives you can choose.</p>
+                <div class="article-meta">
+                  <span>4 min read</span>
+                </div>
+              </div>
+              
+              <div class="article" id="article3">
+                <h4>Hidden Sugars</h4>
+                <p>Sugar can hide under many names in ingredient lists. Learn how to identify them.</p>
+                <div class="article-meta">
+                  <span>2 min read</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="card-navigation">
+              <button class="card-nav-button" id="prevCard"><i class="fa-solid fa-chevron-left"></i></button>
+              <div class="card-nav-dot active" data-index="0"></div>
+              <div class="card-nav-dot" data-index="1"></div>
+              <div class="card-nav-dot" data-index="2"></div>
+              <button class="card-nav-button" id="nextCard"><i class="fa-solid fa-chevron-right"></i></button>
+            </div>
+          </section>
+        </div>
+      </main>
+      
+      <!-- Menu Popup -->
+      <div class="popup-overlay" id="menuPopup">
+        <div class="popup">
+          <div class="popup-header">
+            <h3>Menu</h3>
+            <button class="close-popup"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <div class="menu-options">
+            <a href="#" class="menu-option">
+              <i class="fa-solid fa-user"></i> Profile
+            </a>
+            <a href="#" class="menu-option">
+              <i class="fa-solid fa-award"></i> Badges & Points
+            </a>
+            <a href="#" class="menu-option">
+              <i class="fa-solid fa-info-circle"></i> About
+            </a>
+            <a href="#" class="menu-option">
+              <i class="fa-solid fa-right-from-bracket"></i> Sign Out
+            </a>
+          </div>
+        </div>
+      </div>
+      
+    <!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <button class="nav-button" id="homeButton">
+    <i class="fa-solid fa-house"></i>
+    <span>Home</span>
+  </button>
+  <button class="nav-button" id="historyButton">
+    <i class="fa-solid fa-history"></i>
+    <span>History</span>
+  </button>
+  <button class="nav-button scan-button" id="scanNavButton">
+    <div class="scan-button-circle">
+      <i class="fa-solid fa-camera"></i>
     </div>
-  </div>
-  <footer class="bottom-nav">
-    <a href="home.html" class="nav-link active">🏠 Home</a>
-    <a href="scan.html" class="nav-link">📷 Scan</a>
-    <a href="history.html" class="nav-link">🕘 History</a>
-    <a href="settings.html" class="nav-link">⚙️ Settings</a>
-    <a href="profile.html" class="nav-link">👤 Profile</a>
-  </footer>
-  <script>
-    function startScan() {
-      window.location.href = 'scan.html';
-    }
-  </script>
-</body>
+    <span>Scan</span>
+  </button>
+  <button class="nav-button" id="communityButton">
+    <i class="fa-solid fa-users"></i>
+    <span>Community</span>
+  </button>
+  <button class="nav-button" id="profileButton">
+    <i class="fa-solid fa-user"></i>
+    <span>Profile</span>
+  </button>
+</nav>
+      
+    
+    <script src="script.js"></script>
+  </body>
 </html>
