@@ -7,6 +7,11 @@ let languagePopup;
 let closeLanguagePopup;
 let languageButtons;
 let cancelBtn;
+let saveBtn;
+let successPopup;
+let successCloseBtn;
+let otherDiet;
+let otherDietContainer;
 
 // Current language
 let currentLanguage = 'en';
@@ -30,15 +35,20 @@ const translations = {
     glutenFree: "Gluten Free",
     dairyFree: "Dairy Free",
     nutFree: "Nut Free",
+    otherDiet: "Other",
+    pleaseSpecify: "Please specify:",
     accessibility: "Accessibility Setup",
     audioOutput: "Enable Audio Output",
     audioSpeed: "Audio Speed",
     languagePreferences: "Language Preferences",
     changeLanguage: "Change Language",
     selectLanguage: "Select Language",
-    cancel: "Cancel",
+    cancel: "Skip",
     save: "Save Profile",
-    close: "Close"
+    close: "Close",
+    success: "Success!",
+    profileSaved: "Profile saved successfully!",
+    ok: "OK"
   },
   hi: {
     title: "प्रोफाइल सेटअप",
@@ -53,6 +63,8 @@ const translations = {
     glutenFree: "ग्लूटेन फ्री",
     dairyFree: "डेयरी फ्री",
     nutFree: "नट फ्री",
+    otherDiet: "अन्य",
+    pleaseSpecify: "कृपया निर्दिष्ट करें:",
     accessibility: "पहुंच सेटअप",
     audioOutput: "ऑडियो आउटपुट सक्षम करें",
     audioSpeed: "ऑडियो गति",
@@ -61,9 +73,25 @@ const translations = {
     selectLanguage: "भाषा चुनें",
     cancel: "रद्द करें",
     save: "प्रोफाइल सहेजें",
-    close: "बंद करें"
+    close: "बंद करें",
+    success: "सफलता!",
+    profileSaved: "प्रोफ़ाइल सफलतापूर्वक सहेजी गई!",
+    ok: "ठीक है"
   }
 };
+
+// Hide success popup before any DOM manipulation
+document.addEventListener('DOMContentLoaded', function() {
+  // Immediately hide the success popup
+  const successPopup = document.getElementById('successPopup');
+  if (successPopup) {
+    successPopup.style.display = 'none';
+    successPopup.classList.add('hidden');
+  }
+  
+  // Continue with normal initialization
+  init();
+});
 
 // Initialize the page
 function init() {
@@ -76,6 +104,16 @@ function init() {
   closeLanguagePopup = document.getElementById('closeLanguagePopup');
   languageButtons = document.querySelectorAll('.language-btn');
   cancelBtn = document.getElementById('cancelBtn');
+  saveBtn = document.getElementById('saveBtn');
+  successPopup = document.getElementById('successPopup');
+  successCloseBtn = document.getElementById('successCloseBtn');
+  otherDiet = document.getElementById('otherDiet');
+  otherDietContainer = document.getElementById('otherDietContainer');
+  
+  // Make absolutely sure the success popup is hidden on load
+  // Use both CSS class and direct style property
+  successPopup.classList.add('hidden');
+  successPopup.style.display = 'none';
   
   // Hide audio settings by default
   audioSettingsContainer.style.display = 'none';
@@ -84,6 +122,7 @@ function init() {
   audioOutput.addEventListener('change', toggleAudioSettings);
   languageBtn.addEventListener('click', showLanguagePopup);
   closeLanguagePopup.addEventListener('click', hideLanguagePopup);
+  otherDiet.addEventListener('change', toggleOtherDietField);
   
   // Language selection
   languageButtons.forEach(button => {
@@ -94,8 +133,15 @@ function init() {
     });
   });
   
-  // Form submission
-  profileForm.addEventListener('submit', saveProfile);
+  // Save button - this should trigger the popup
+  saveBtn.addEventListener('click', saveProfile);
+  
+  // Success popup close button
+  successCloseBtn.addEventListener('click', () => {
+    hideSuccessPopup();
+    // Redirect to home page after closing success popup
+    window.location.href = 'home.html';
+  });
   
   // Cancel button
   cancelBtn.addEventListener('click', () => {
@@ -112,6 +158,11 @@ function init() {
       hideLanguagePopup();
     }
   });
+}
+
+// Toggle other diet text field visibility
+function toggleOtherDietField() {
+  otherDietContainer.style.display = otherDiet.checked ? 'block' : 'none';
 }
 
 // Toggle audio settings visibility
@@ -158,13 +209,26 @@ function speakText(text) {
 // Show language popup
 function showLanguagePopup() {
   languagePopup.classList.remove('hidden');
-  languagePopup.style.top = $;{languageBtn.getBoundingClientRect().bottom + 10}px;
-  languagePopup.style.left = $;{languageBtn.getBoundingClientRect().left}px;
+  const rect = languageBtn.getBoundingClientRect();
+  languagePopup.style.top = (rect.bottom + 10) + 'px';
+  languagePopup.style.left = rect.left + 'px';
 }
 
 // Hide language popup
 function hideLanguagePopup() {
   languagePopup.classList.add('hidden');
+}
+
+// Show success popup
+function showSuccessPopup() {
+  successPopup.classList.remove('hidden');
+  successPopup.style.display = 'flex';
+}
+
+// Hide success popup
+function hideSuccessPopup() {
+  successPopup.classList.add('hidden');
+  successPopup.style.display = 'none';
 }
 
 // Update language
@@ -188,6 +252,8 @@ function updateLanguage() {
   document.querySelector('label[for="glutenFree"]').textContent = trans.glutenFree;
   document.querySelector('label[for="dairyFree"]').textContent = trans.dairyFree;
   document.querySelector('label[for="nutFree"]').textContent = trans.nutFree;
+  document.querySelector('label[for="otherDiet"]').textContent = trans.otherDiet;
+  document.querySelector('label[for="otherDietText"]').textContent = trans.pleaseSpecify;
   
   document.querySelector('label[for="audioOutput"]').textContent = trans.audioOutput;
   document.querySelector('label[for="audioSpeed"]').textContent = trans.audioSpeed;
@@ -197,7 +263,12 @@ function updateLanguage() {
   closeLanguagePopup.textContent = trans.close;
   
   cancelBtn.textContent = trans.cancel;
-  document.querySelector('.btn-primary').textContent = trans.save;
+  saveBtn.textContent = trans.save;
+  
+  // Update success popup text
+  document.querySelector('#successPopup h3').textContent = trans.success;
+  document.querySelector('#successMessage').textContent = trans.profileSaved;
+  successCloseBtn.textContent = trans.ok;
   
   // If audio is enabled, announce language change
   if (audioOutput.checked && speechSynthesis) {
@@ -208,28 +279,35 @@ function updateLanguage() {
 }
 
 // Save profile data
-function saveProfile(event) {
-  event.preventDefault();
-  
+function saveProfile() {
+  // Validate form if required fields exist
+  if (document.getElementById('fullName').value === '') {
+    alert(currentLanguage === 'en' ? 
+      'Please fill in all required fields.' : 
+      'कृपया सभी आवश्यक फ़ील्ड भरें।');
+    return;
+  }
+
   // Get form data
-  const formData = new FormData(profileForm);
   const profileData = {
     personalInfo: {
-      fullName: formData.get('fullName'),
-      email: formData.get('email'),
-      phone: formData.get('phone'),
-      birthdate: formData.get('birthdate')
+      fullName: document.getElementById('fullName').value,
+      email: document.getElementById('email').value,
+      phone: document.getElementById('phone').value,
+      birthdate: document.getElementById('birthdate').value
     },
     dietaryPreferences: {
       vegetarian: document.getElementById('vegetarian').checked,
       vegan: document.getElementById('vegan').checked,
       glutenFree: document.getElementById('glutenFree').checked,
       dairyFree: document.getElementById('dairyFree').checked,
-      nutFree: document.getElementById('nutFree').checked
+      nutFree: document.getElementById('nutFree').checked,
+      other: document.getElementById('otherDiet').checked,
+      otherSpecified: document.getElementById('otherDietText').value
     },
     accessibility: {
       audioOutput: audioOutput.checked,
-      audioSpeed: formData.get('audioSpeed')
+      audioSpeed: document.getElementById('audioSpeed').value
     },
     language: currentLanguage
   };
@@ -237,74 +315,20 @@ function saveProfile(event) {
   // In a real application, you would send this data to the server
   console.log('Profile data:', profileData);
   
-  // Show success message
-  alert(currentLanguage === 'en' ? 
-    'Profile saved successfully!' : 
-    'प्रोफ़ाइल सफलतापूर्वक सहेजी गई!');
-    
+  // Show success popup
+  showSuccessPopup();
+  
   // If audio is enabled, announce success
   if (audioOutput.checked && speechSynthesis) {
-    speakText(currentLanguage === 'en' ? 
-      'Profile saved successfully!' : 
-      'प्रोफ़ाइल सफलतापूर्वक सहेजी गई!');
+    speakText(translations[currentLanguage].profileSaved);
   }
-  function saveProfile(event) {
-    event.preventDefault();
-    
-    // Get form data
-    const formData = new FormData(profileForm);
-    const profileData = {
-      personalInfo: {
-        fullName: formData.get('fullName'),
-        email: formData.get('email'),
-        phone: formData.get('phone'),
-        birthdate: formData.get('birthdate')
-      },
-      dietaryPreferences: {
-        vegetarian: document.getElementById('vegetarian').checked,
-        vegan: document.getElementById('vegan').checked,
-        glutenFree: document.getElementById('glutenFree').checked,
-        dairyFree: document.getElementById('dairyFree').checked,
-        nutFree: document.getElementById('nutFree').checked
-      },
-      accessibility: {
-        audioOutput: audioOutput.checked,
-        audioSpeed: formData.get('audioSpeed')
-      },
-      language: currentLanguage
-    };
-    
-    // In a real application, you would send this data to the server
-    console.log('Profile data:', profileData);
-    
-    // Show success message
-    alert(currentLanguage === 'en' ? 
-      'Profile saved successfully!' : 
-      'प्रोफ़ाइल सफलतापूर्वक सहेजी गई!');
-      
-    // If audio is enabled, announce success
-    if (audioOutput.checked && speechSynthesis) {
-      speakText(currentLanguage === 'en' ? 
-        'Profile saved successfully!' : 
-        'प्रोफ़ाइल सफलतापूर्वक सहेजी गई!');
-    }
-    
-    // NEW CODE: Redirect to home.html after a short delay 
-    // The delay allows users to see the success message and hear the audio if enabled
-    setTimeout(function() {
-      window.location.href = 'home.html';
-    }, 1500); // 1.5 second delay before redirect
-  }
-  
 }
 
 // Reset form
 function resetForm() {
   profileForm.reset();
   audioSettingsContainer.style.display = 'none';
+  otherDietContainer.style.display = 'none';
   currentLanguage = 'en';
   updateLanguage();
 }
-
-// Initialize the page when DOM is loaded
-document.addEventListener('DOMContentLoaded', init);

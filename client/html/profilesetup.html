@@ -1,4 +1,3 @@
-<!-- profile.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,8 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Profile Setup</title>
   <link rel="stylesheet" href="../css/profilesetup.css">
-  <link rel="stylesheet" href="../css/common.css">
-
+  <style>
+    /* Ensure the success popup is hidden by default */
+    .hidden {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
   <div class="overlay">
@@ -17,7 +20,7 @@
         <div class="form-section">
           <h2>Personal Information</h2>
           <div class="form-group">
-            <label for="fullName">Full Name</label>
+            <label for="fullName">Full Name*</label>
             <input type="text" id="fullName" name="fullName" required>
           </div>
           
@@ -59,6 +62,14 @@
             <input type="checkbox" id="nutFree" name="diet">
             <label for="nutFree">Nut Free</label>
           </div>
+          <div class="checkbox-group">
+            <input type="checkbox" id="otherDiet" name="diet">
+            <label for="otherDiet">Other</label>
+          </div>
+          <div class="form-group" id="otherDietContainer" style="display: none;">
+            <label for="otherDietText">Please specify:</label>
+            <input type="text" id="otherDietText" name="otherDietText">
+          </div>
         </div>
         
         <div class="form-section">
@@ -87,12 +98,8 @@
         </div>
         
         <div class="btn-container">
-          
-          <button type="button" id="cancelBtn" class="btn-secondary" onclick="window.location.href='home.html'">Cancel</button>
-          
-          <!-- Option 2: Add a button that navigates to home.html when clicked -->
-<!-- Add this near the cancel and save buttons -->
-<button type="button" id="homeBtn" class="btn" onclick="window.location.href='home.html'">Save Profile</button>
+          <button type="button" id="cancelBtn" class="btn-secondary"  onclick="window.location.href='home.html'">Skip</button>
+          <button type="button" id="saveBtn" class="btn-primary">Save Profile</button>
         </div>
       </form>
     </div>
@@ -103,6 +110,15 @@
     <button type="button" class="btn-secondary language-btn" data-lang="en">English</button>
     <button type="button" class="btn-secondary language-btn" data-lang="hi">हिंदी (Hindi)</button>
     <button type="button" class="btn-secondary" id="closeLanguagePopup">Close</button>
+  </div>
+
+  <!-- Success Popup - explicitly marked as hidden -->
+  <div id="successPopup" class="success-popup hidden" style="display: none;">
+    <div class="success-content">
+      <h3>Success!</h3>
+      <p id="successMessage">Profile saved successfully!</p>
+      <button id="successCloseBtn" class="btn-primary">OK</button>
+    </div>
   </div>
 
   <script src="../js/profilesetup.js"></script>
