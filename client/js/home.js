@@ -149,3 +149,5 @@ document.addEventListener('DOMContentLoaded', () => {
       alert('Voice search activated!');
     });
   });
+
+ 
