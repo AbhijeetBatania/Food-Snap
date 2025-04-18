@@ -2,39 +2,90 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scan Product - FoodSnap</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodSnap - Scan Products</title>
+    <link rel="stylesheet" href="../css/scan.css">
 </head>
 <body>
-  <div class="scan-container">
-    <h2>Scan Your Product</h2>
-    <div class="camera-box">
-      <video id="camera-stream" autoplay playsinline></video>
-      <button class="button" onclick="captureImage()">📸 Capture</button>
-    </div>
-  </div>
-  <footer class="bottom-nav">
-    <a href="home.html" class="nav-link">🏠 Home</a>
-    <a href="scan.html" class="nav-link active">📷 Scan</a>
-    <a href="history.html" class="nav-link">🕘 History</a>
-    <a href="settings.html" class="nav-link">⚙️ Settings</a>
-    <a href="profile.html" class="nav-link">👤 Profile</a>
-  </footer>
-  <script>
-    const video = document.getElementById("camera-stream");
-    navigator.mediaDevices.getUserMedia({ video: true })
-      .then(stream => {
-        video.srcObject = stream;
-      })
-      .catch(err => {
-        alert("Camera access denied or not available.");
-        console.error(err);
-      });
-    function captureImage() {
-      alert("Capture button clicked (functionality to be implemented)");
-    }
-  </script>
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">🥦</span>
+                <span>FoodSnap</span>
+            </div>
+            <nav>
+                <ul>
+                    
+                </ul>
+            </nav>
+            
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="scan-container">
+                <div class="two-column">
+                    <div class="scan-info">
+                        <h1>Scan Food Products</h1>
+                        <p>Point your camera at any food product barcode to instantly see nutritional information, ingredients, and health ratings.</p>
+                    </div>
+                    <div class="scan-preview">
+                        <video id="videoElement" autoplay playsinline></video>
+                        <div class="scan-overlay">
+                            <div class="scan-icon">📷</div>
+                            <p>Tap the button below to scan</p>
+                        </div>
+                        <div class="scanning-frame">
+                            <div class="scanning-line"></div>
+                        </div>
+                        <button class="cancel-scan">✕</button>
+                    </div>
+                </div>
+                <button class="button scan-button" id="scanButton">
+                    <span class="scan-button-icon">📷</span>
+                    <span>Scan Product</span>
+                </button>
+                
+                <div class="recent-items">
+                    <h2>Recently Scanned</h2>
+                    <div class="items-grid">
+                        <div class="product-card">
+                            <div class="product-image">Product Image</div>
+                            <div class="product-info">
+                                <div class="product-name">Greek Yogurt</div>
+                                <div class="product-details">150g • Scanned today</div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image">Product Image</div>
+                            <div class="product-info">
+                                <div class="product-name">Whole Grain Bread</div>
+                                <div class="product-details">400g • Scanned yesterday</div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image">Product Image</div>
+                            <div class="product-info">
+                                <div class="product-name">Organic Milk</div>
+                                <div class="product-details">1L • Scanned 2 days ago</div>
+                            </div>
+                        </div>
+                        <div class="product-card">
+                            <div class="product-image">Product Image</div>
+                            <div class="product-info">
+                                <div class="product-name">Mixed Berries</div>
+                                <div class="product-details">250g • Scanned 3 days ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    
+    <script src="../js/scan.js"></script>
 </body>
 </html>

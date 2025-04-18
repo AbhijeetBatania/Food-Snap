@@ -1,0 +1,600 @@
+:root {
+    --primary-color: #66b244;
+    --secondary-color: #4a8f32;
+    --light-color: #f8f9fa;
+    --dark-color: #343a40;
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+/* Header Styles */
+header {
+    background-color: white;
+    box-shadow: var(--shadow);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.logo-icon {
+    font-size: 1.8rem;
+}
+
+nav ul {
+    display: none;
+    list-style: none;
+}
+
+.menu-button {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--dark-color);
+}
+
+/* Main Content Styles */
+main {
+    margin-top: 80px;
+    min-height: calc(100vh - 140px);
+    display: flex;
+    flex-direction: column;
+}
+
+.scan-container {
+    text-align: center;
+    padding: 2rem 1rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h1, h2, h3 {
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+h1 {
+    font-size: 2rem;
+}
+
+p {
+    margin-bottom: 1.5rem;
+    color: #666;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Scan Preview Area */
+.scan-preview {
+    width: 100%;
+    max-width: 350px;
+    height: 350px;
+    margin: 1rem auto;
+    border: 2px dashed var(--primary-color);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    background-color: #f8f8f8;
+    overflow: hidden;
+}
+
+.scan-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.7);
+    opacity: 1;
+    transition: opacity 0.3s ease;
+}
+
+.scan-icon {
+    font-size: 3rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+#videoElement {
+    display: none;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Button Styles */
+.button {
+    padding: 0.8rem 2rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 1rem 0;
+    box-shadow: var(--shadow);
+}
+
+.button:hover {
+    background-color: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.button:active {
+    transform: translateY(0);
+}
+
+.scan-button {
+    margin-top: 1.5rem;
+    font-size: 1.1rem;
+    padding: 1rem 2.5rem;
+}
+
+.scan-button-icon {
+    font-size: 1.2rem;
+}
+
+/* Recently Scanned Items */
+.recent-items {
+    padding: 2rem 1rem;
+    background-color: white;
+    box-shadow: var(--shadow);
+    border-radius: 10px;
+    margin-top: 2rem;
+    width: 100%;
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.product-card {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+}
+
+.product-image {
+    width: 100%;
+    height: 100px;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #999;
+    font-size: 0.8rem;
+}
+
+.product-info {
+    padding: 0.5rem;
+}
+
+.product-name {
+    font-size: 0.9rem;
+    font-weight: bold;
+    margin-bottom: 0.2rem;
+}
+
+.product-details {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+/* Scanner Active State */
+.scanner-active .scan-overlay {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.scanner-active #videoElement {
+    display: block;
+}
+
+.scanning-frame {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    height: 40%;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    box-shadow: 0 0 0 99999px rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.scanner-active .scanning-frame {
+    display: block;
+}
+
+.scanning-line {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+    top: 0;
+    animation: scan 1.5s linear infinite;
+    box-shadow: 0 0 8px var(--primary-color);
+}
+
+@keyframes scan {
+    0% {
+        top: 0;
+    }
+    100% {
+        top: 100%;
+    }
+}
+
+.cancel-scan {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: white;
+    color: var(--dark-color);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2rem;
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    z-index: 10;
+    display: none;
+}
+
+.scanner-active .cancel-scan {
+    display: flex;
+}
+
+/* Footer Styles */
+footer {
+    background-color: white;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.footer-icon {
+    font-size: 1.5rem;
+    color: var(--dark-color);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.footer-icon:hover, 
+.footer-icon.active {
+    color: var(--primary-color);
+}
+
+/* Tablet styles */
+@media (min-width: 768px) {
+    h1 {
+        font-size: 2.5rem;
+    }
+
+    .header-content {
+        padding: 1rem 2rem;
+    }
+
+    .menu-button {
+        display: none;
+    }
+
+    nav ul {
+        display: flex;
+        gap: 2rem;
+    }
+
+    nav ul li a {
+        text-decoration: none;
+        color: var(--dark-color);
+        font-weight: 500;
+        transition: color 0.3s;
+    }
+
+    nav ul li a:hover {
+        color: var(--primary-color);
+    }
+
+    .scan-container {
+        padding: 3rem 2rem;
+    }
+
+    .scan-preview {
+        max-width: 400px;
+        height: 400px;
+    }
+
+    .items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+
+    .product-image {
+        height: 130px;
+    }
+}
+
+/* Desktop styles */
+@media (min-width: 992px) {
+    .container {
+        padding: 2rem;
+    }
+
+    .scan-container {
+        padding: 4rem 2rem;
+    }
+
+    main {
+        margin-top: 100px;
+    }
+
+    .scan-preview {
+        max-width: 450px;
+        height: 450px;
+    }
+
+    .two-column {
+        display: flex;
+        gap: 3rem;
+        align-items: center;
+    }
+
+    .scan-info {
+        max-width: 400px;
+        text-align: left;
+    }
+
+    .items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+
+    .product-image {
+        height: 150px;
+    }
+}
+/* Additional Desktop Enhancements - Add these at the end of your CSS file */
+@media (min-width: 1200px) {
+    /* Container width adjustments */
+    .container {
+        max-width: 1400px;
+        padding: 0 3rem;
+    }
+    
+    /* Improved two-column layout */
+    .two-column {
+        gap: 5rem;
+        justify-content: center;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .scan-info {
+        max-width: 500px;
+        padding-right: 2rem;
+    }
+    
+    .scan-info h1 {
+        font-size: 3rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .scan-info p {
+        font-size: 1.1rem;
+        line-height: 1.7;
+    }
+    
+    /* Make scan preview area larger on big screens */
+    .scan-preview {
+        min-width: 500px;
+        height: 500px;
+    }
+    
+    /* Recent items section improvements */
+    .recent-items {
+        max-width: 1200px;
+        margin: 3rem auto 0;
+        padding: 2.5rem;
+        border-radius: 15px;
+    }
+    
+    .recent-items h2 {
+        font-size: 2rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .items-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .product-card {
+        border-radius: 12px;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    }
+    
+    .product-image {
+        height: 180px;
+    }
+    
+    .product-info {
+        padding: 1rem;
+    }
+    
+    .product-name {
+        font-size: 1.1rem;
+    }
+    
+    .product-details {
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+    }
+    
+    /* Enhance button size on large screens */
+    .scan-button {
+        padding: 1.2rem 3rem;
+        font-size: 1.2rem;
+    }
+    
+    /* Footer adjustments */
+    .footer-content {
+        gap: 3rem;
+    }
+    
+    .footer-icon {
+        font-size: 1.8rem;
+    }
+}
+
+/* Fix for wide/ultrawide screens */
+@media (min-width: 1600px) {
+    .container {
+        max-width: 1600px;
+    }
+    
+    .two-column {
+        max-width: 1400px;
+    }
+    
+    .recent-items {
+        max-width: 1400px;
+    }
+    
+    .scan-info {
+        max-width: 600px;
+    }
+    
+    /* Create a more balanced grid for ultrawide screens */
+    .items-grid {
+        grid-template-columns: repeat(5, 1fr);
+    }
+    
+    /* Add visual elements for large empty spaces */
+    body::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 30%;
+        height: 100%;
+        background: linear-gradient(to left, rgba(102, 178, 68, 0.03), transparent);
+        z-index: -1;
+        pointer-events: none;
+    }
+    
+    body::after {
+        content: '';
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 30%;
+        height: 70%;
+        background: linear-gradient(to top right, rgba(102, 178, 68, 0.02), transparent);
+        z-index: -1;
+        pointer-events: none;
+    }
+}
+
+/* Optional: Add a max-width to prevent extreme stretching */
+.scan-container {
+    max-width: 1800px;
+    margin: 0 auto;
+}
+
+/* Improve header for desktop */
+@media (min-width: 992px) {
+    .header-content {
+        padding: 1rem 3rem;
+        max-width: 1800px;
+        margin: 0 auto;
+    }
+    
+    .logo {
+        font-size: 1.8rem;
+    }
+    
+    nav ul {
+        gap: 3rem;
+    }
+    
+    nav ul li a {
+        font-size: 1.1rem;
+    }
+}
