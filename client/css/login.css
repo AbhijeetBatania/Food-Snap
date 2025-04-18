@@ -1,0 +1,171 @@
+/* ========= LOGIN PAGE ========= */
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #f7fdfc, #ffffff);
+    margin: 0;
+    padding: 0;
+    color: #222;
+  }
+  
+  .login-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2.5rem 1rem;
+    text-align: center;
+    animation: fadeIn 0.8s ease-in;
+  }
+  
+  .logo {
+    width: 80px;
+    margin-bottom: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  
+  .login-container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .login-container p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 0.9rem;
+    margin: 0.6rem 0;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .login-form input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.3);
+    outline: none;
+  }
+  
+  .btn {
+    background-color:#4CAF50;
+    color: white;
+    border: none;
+    padding: 1rem;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 1rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btn:hover {
+    background-color: #4CAF50;
+  }
+  
+  .signup-link {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .signup-link a {
+    color: #66b288;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  /* ========= RESPONSIVENESS ========= */
+  
+  @media (min-width: 600px) {
+    .login-container {
+      padding: 3rem;
+      background-color: #fff;
+      border: 1px solid #eaeaea;
+      border-radius: 20px;
+      margin-top: 4rem;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    }
+  
+    .login-container h1 {
+      font-size: 2.1rem;
+    }
+  
+    .login-form input {
+      font-size: 1.1rem;
+    }
+  }
+  
+  /* ========= ANIMATIONS ========= */
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  /* Error states */
+  .login-form input.error {
+    border-color: #ff3b30;
+    background-color: rgba(255, 59, 48, 0.05);
+  }
+  
+  .error-message {
+    color: #ff3b30;
+    font-size: 0.8rem;
+    text-align: left;
+    margin-top: -0.3rem;
+    margin-bottom: 0.5rem;
+    animation: fadeIn 0.3s ease;
+  }
+  
+  /* Loading spinner */
+  .loading-spinner {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 0.8s linear infinite;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Disabled button state */
+  .btn:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+  }
+  
+  /* Optional: Remember me checkbox styling */
+  .remember-me-container {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0;
+    text-align: left;
+  }
+  
+  .remember-me-container input {
+    width: auto;
+    margin-right: 0.5rem;
+  }
+  
+  .remember-me-container label {
+    color: #666;
+    font-size: 0.9rem;
+  }

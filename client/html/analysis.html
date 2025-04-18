@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NutriScan Analysis</title>
+    <link rel="stylesheet" href="../css/analysis.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="header-content">
+                <h1 class="product-title">Honey Wheat Bread</h1>
+                <p class="product-subtitle">Whole Foods Market</p>
+            </div>
+            <button id="audioButton" class="audio-button" aria-label="Listen to audio summary">
+                <i class="fas fa-volume-up"></i>
+            </button>
+        </header>
+        
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i> Overall Product Rating
+            </h2>
+            <div class="rating-container">
+                <div class="rating-circle">
+                    <div class="rating-number">B</div>
+                </div>
+                <div class="rating-scale">
+                    <p>Nutritional Quality</p>
+                    <div class="rating-bar">
+                        <div class="rating-marker"></div>
+                    </div>
+                    <div class="rating-labels">
+                        <span>Very Bad</span>
+                        <span>Bad</span>
+                        <span>Good</span>
+                        <span>Very Good</span>
+                        <span>Excellent</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="alert alert-warning">
+                <div class="alert-icon"><i class="fas fa-exclamation-triangle"></i></div>
+                <div class="alert-content">
+                    <div class="alert-title">Added Sugar Warning</div>
+                    <div class="alert-text">This product contains added sugars that exceed recommended daily limits. Consider consuming in moderation.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-chart-bar"></i> Nutritional Facts Analysis
+            </h2>
+            <div class="nutrition-grid">
+                <div class="nutrition-card">
+                    <div class="nutrition-name">Calories</div>
+                    <div class="nutrition-value">120 kcal</div>
+                    <div class="nutrition-context">Per serving (1 slice)</div>
+                </div>
+                <div class="nutrition-card">
+                    <div class="nutrition-name">Total Fat</div>
+                    <div class="nutrition-value">2.5g</div>
+                    <div class="nutrition-context">4% of daily value</div>
+                </div>
+                <div class="nutrition-card">
+                    <div class="nutrition-name">Sodium</div>
+                    <div class="nutrition-value">240mg</div>
+                    <div class="nutrition-context">10% of daily value</div>
+                </div>
+                <div class="nutrition-card">
+                    <div class="nutrition-name">Total Carbs</div>
+                    <div class="nutrition-value">22g</div>
+                    <div class="nutrition-context">7% of daily value</div>
+                </div>
+                <div class="nutrition-card highlight-card">
+                    <div class="nutrition-name">Sugars</div>
+                    <div class="nutrition-value">6g</div>
+                    <div class="nutrition-context">High - 12% of daily value</div>
+                </div>
+                <div class="nutrition-card">
+                    <div class="nutrition-name">Protein</div>
+                    <div class="nutrition-value">4g</div>
+                    <div class="nutrition-context">8% of daily value</div>
+                </div>
+                <div class="nutrition-card">
+                    <div class="nutrition-name">Fiber</div>
+                    <div class="nutrition-value">3g</div>
+                    <div class="nutrition-context">12% of daily value</div>
+                </div>
+                <div class="nutrition-card">
+                    <div class="nutrition-name">Iron</div>
+                    <div class="nutrition-value">1.2mg</div>
+                    <div class="nutrition-context">8% of daily value</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-search"></i> Ingredient Analysis
+            </h2>
+            
+            <div class="ingredient-item">
+                <div class="ingredient-header">
+                    <div class="ingredient-name">High Fructose Corn Syrup</div>
+                    <div class="ingredient-tag tag-high-risk">High Risk</div>
+                </div>
+                <div class="ingredient-desc">
+                    Processed sweetener linked to insulin resistance and metabolic disorders. May contribute to weight gain and inflammatory conditions when consumed regularly.
+                </div>
+            </div>
+            
+            <div class="ingredient-item">
+                <div class="ingredient-header">
+                    <div class="ingredient-name">Sodium Benzoate</div>
+                    <div class="ingredient-tag tag-caution">Caution</div>
+                </div>
+                <div class="ingredient-desc">
+                    Preservative that may cause allergic reactions in sensitive individuals. When combined with vitamin C, it can form benzene, a carcinogenic compound.
+                </div>
+            </div>
+            
+            <div class="ingredient-item">
+                <div class="ingredient-header">
+                    <div class="ingredient-name">Whole Wheat Flour</div>
+                    <div class="ingredient-tag tag-safe">Beneficial</div>
+                </div>
+                <div class="ingredient-desc">
+                    Contains fiber, minerals, and B vitamins. Provides more nutritional value than refined white flour.
+                </div>
+            </div>
+            
+            <div class="alert alert-danger">
+                <div class="alert-icon"><i class="fas fa-ban"></i></div>
+                <div class="alert-content">
+                    <div class="alert-title">Artificial Colors Present</div>
+                    <div class="alert-text">This product contains Yellow 5 and Yellow 6, which may cause hyperactivity in sensitive individuals, particularly children.</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title">
+                <i class="fas fa-utensils"></i> Dietary Preferences
+            </h2>
+            
+            <div class="dietary-grid">
+                <div class="dietary-item">
+                    <div class="dietary-icon"><i class="fas fa-seedling"></i></div>
+                    <div class="dietary-name">Vegan</div>
+                    <div class="dietary-status status-no">No</div>
+                </div>
+                
+                <div class="dietary-item">
+                    <div class="dietary-icon"><i class="fas fa-carrot"></i></div>
+                    <div class="dietary-name">Vegetarian</div>
+                    <div class="dietary-status status-yes">Yes</div>
+                </div>
+                
+                <div class="dietary-item">
+                    <div class="dietary-icon"><i class="fas fa-wheat-awn"></i></div>
+                    <div class="dietary-name">Gluten-Free</div>
+                    <div class="dietary-status status-no">No</div>
+                </div>
+                
+                <div class="dietary-item">
+                    <div class="dietary-icon"><i class="fas fa-cheese"></i></div>
+                    <div class="dietary-name">Lactose-Free</div>
+                    <div class="dietary-status status-yes">Yes</div>
+                </div>
+                
+                <div class="dietary-item">
+                    <div class="dietary-icon"><i class="fas fa-cookie"></i></div>
+                    <div class="dietary-name">Nut-Free</div>
+                    <div class="dietary-status status-no">No</div>
+                </div>
+                
+                <div class="dietary-item">
+                    <div class="dietary-icon"><i class="fas fa-leaf"></i></div>
+                    <div class="dietary-name">Organic</div>
+                    <div class="dietary-status status-no">No</div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>This analysis is for informational purposes only and should not replace professional medical advice. Actual product composition may vary.</p>
+        </footer>
+    </div>
+
+    <!-- Audio player container (hidden by default) -->
+    <div id="audioPlayerContainer" class="audio-player-container">
+        <div class="audio-player-header">
+            <h3>Audio Summary</h3>
+            <button id="closeAudioPlayer" class="close-button">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="audio-player-content">
+            <audio id="audioPlayer" controls>
+                <source src="product-summary.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+            <div class="audio-transcript">
+                <p class="transcript-heading">Transcript:</p>
+                <p>Honey Wheat Bread by Whole Foods Market - This product receives a B rating for nutritional quality. While it contains beneficial whole wheat flour, it's high in added sugars with 6 grams per serving. It contains High Fructose Corn Syrup which should be consumed with caution. The product is vegetarian and lactose-free, but not vegan, gluten-free, nut-free or organic.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="overlay" class="overlay"></div>
+    
+    <script src="../js/analysis.js"></script>
+</body>
+</html>

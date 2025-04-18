@@ -50,6 +50,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
     
+    // Select the "View All" button
+    const viewAllButton = document.getElementById('viewAllButton');
+
+    // Add click event listener
+    viewAllButton.addEventListener('click', function() {
+        // Redirect to history.html
+        window.location.href = '../html/history.html';
+    });
     // Knowledge Hub Cards Navigation
     const articles = document.querySelectorAll('.article');
     const dots = document.querySelectorAll('.card-nav-dot');

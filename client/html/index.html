@@ -1,24 +1,70 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FoodSnap - Get Started</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodSnap: Scan Smart, Eat Healthy</title>
+    <link rel="stylesheet" href="../css/index.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <div class="start-container">
-    <h1>Welcome to FoodSnap</h1>
-    <p>Your smart food label scanner and health assistant</p>
-    <div class="button-group">
-      <a href="login.html"  class="button" >Log In</a>
-      <a href="signup.html" class="button">Sign Up</a>
+    <div class="container">
+        <header>
+            <img src="/public/logo.png" alt="FoodSnap Logo" class="logo">
+        </header>
+
+        <section class="hero">
+            <h1>Discover What's In Your Food</h1>
+            <p>Scan products to instantly access nutrition facts, ingredients, allergens, and more - making healthy choices has never been easier.</p>
+            <a href="login.html" class="scan-btn">Start Scanning</a>
+        </section>
+
+        <section class="about-section">
+            <h2>About FoodSnap</h2>
+            
+            <p>FoodSnap is your personal nutritional assistant, helping you make informed decisions about the food you consume with just a simple scan.</p>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-barcode"></i>
+                    </div>
+                    <h3>Instant Scanning</h3>
+                    <p>Simply scan the barcode of any product to get detailed nutritional information in seconds.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-exclamation-circle"></i>
+                    </div>
+                    <h3>Allergen Alerts</h3>
+                    <p>Set your dietary restrictions and receive immediate alerts for allergens and ingredients to avoid.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>Nutritional Breakdown</h3>
+                    <p>View detailed macronutrients, vitamins, minerals, and health scores for any product.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3>Healthier Alternatives</h3>
+                    <p>Discover better options with our smart recommendation system based on your preferences.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>&copy; 2025 FoodSnap. All rights reserved.</p>
+        </footer>
     </div>
-    <div class="about-section">
-      <h3>About Us</h3>
-      <p>FoodSnap helps you make healthier and more informed food choices by scanning product labels and decoding ingredients and nutrition instantly.</p>
-    </div>
-  </div>
+
+    <script src="../js/inde.js"></script>
 </body>
 </html>

@@ -1,0 +1,118 @@
+/* ========= SHARED STYLES ========= */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #f0f4f8, #ffffff);
+    margin: 0;
+    padding: 0;
+    color: #222;
+  }
+  
+  
+  
+  
+  /* ========= SIGNUP PAGE ========= */
+  
+  .signup-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2.5rem 1rem;
+    text-align: center;
+    animation: fadeIn 0.8s ease-in;
+  }
+  
+  .logo {
+    width: 80px;
+    margin-bottom: 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+  
+  .signup-container h1 {
+    font-size: 1.8rem;
+    margin-bottom: 0.3rem;
+  }
+  
+  .signup-container p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1.5rem;
+  }
+  
+  .signup-form input {
+    width: 100%;
+    padding: 0.9rem;
+    margin: 0.6rem 0;
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .signup-form input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.3);
+    outline: none;
+  }
+  
+  .btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 1rem;
+    font-weight: bold;
+    width: 100%;
+    margin-top: 1rem;
+    border-radius: 12px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .btn:hover {
+    background-color: #43a047;
+  }
+  
+  .login-link {
+    margin-top: 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .login-link a {
+    color: #4CAF50;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  /* ========= RESPONSIVENESS ========= */
+  
+  @media (min-width: 600px) {
+    .signup-container {
+      padding: 3rem;
+      background-color: #fff;
+      border: 1px solid #eaeaea;
+      border-radius: 20px;
+      margin-top: 4rem;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+    }
+  
+    .signup-container h1 {
+      font-size: 2.1rem;
+    }
+  
+    .signup-form input {
+      font-size: 1.1rem;
+    }
+  }
+  
+  /* ========= ANIMATIONS ========= */
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
