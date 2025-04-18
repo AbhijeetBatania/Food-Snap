@@ -1,491 +1,374 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // DOM Elements
-    const editProfileBtn = document.getElementById('editProfileBtn');
-    const editProfileModal = document.getElementById('editProfileModal');
-    const closeBtn = document.querySelector('.close-btn');
-    const cancelBtn = document.getElementById('cancelBtn');
-    const profileForm = document.getElementById('profileForm');
-    const profilePhotoUpload = document.getElementById('profilePhotoUpload');
-    const profilePreview = document.getElementById('profilePreview');
-    const profileImage = document.getElementById('profileImage');
-    const nameInput = document.getElementById('nameInput');
-    const displayName = document.getElementById('displayName');
-    const dobInput = document.getElementById('dobInput');
-    const displayDOB = document.getElementById('displayDOB');
-    const emailInput = document.getElementById('emailInput');
-    const displayEmail = document.getElementById('displayEmail');
-    const dietaryCheckboxes = document.querySelectorAll('.checkbox-item input[type="checkbox"]');
-    const dietaryPrefsList = document.getElementById('dietaryPrefsList');
+    // DOM elements
+    const profileNameElement = document.getElementById('profile-name');
+    const profilePhotoElement = document.getElementById('profile-photo');
+    const photoOverlay = document.getElementById('photo-overlay');
+    const editProfileBtn = document.getElementById('edit-profile-btn');
+    const modal = document.getElementById('edit-profile-modal');
+    const closeModal = document.querySelector('.close-modal');
+    const cancelBtn = document.querySelector('.cancel-btn');
+    const saveBtn = document.querySelector('.save-btn');
+    const editProfileForm = document.getElementById('edit-profile-form');
+    const photoPreview = document.getElementById('photo-preview');
+    const photoUpload = document.getElementById('photo-upload');
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
     
-    // Accessibility Elements
-    const darkModeToggle = document.getElementById('darkModeToggle');
-    const audioOption = document.getElementById('audioOption');
-    const decreaseFontBtn = document.getElementById('decreaseFontBtn');
-    const resetFontBtn = document.getElementById('resetFontBtn');
-    const increaseFontBtn = document.getElementById('increaseFontBtn');
-    const languageSelect = document.getElementById('languageSelect');
+    // Form fields
+    const editNameInput = document.getElementById('edit-name');
+    const editEmailInput = document.getElementById('edit-email');
+    const editDobInput = document.getElementById('edit-dob');
+    const dietaryPreferences = [
+        'non-vegetarian',
+        'vegetarian',
+        'vegan',
+        'gluten-free',
+        'dairy-free',
+        'nut-free'
+    ];
     
-    // Demo Statistics - Would normally be fetched from a database
-    const stats = {
-        totalScans: 42,
-        monthlyScans: 12,
-        redFlags: 5,
-        greenFlags: 37
+    // User data object - initialize with stored values or defaults
+    let userData = {
+        name: localStorage.getItem('userName') || 'Enter Name',
+        email: localStorage.getItem('userEmail') || '',
+        dob: localStorage.getItem('userDob') || '',
+        profilePhoto: localStorage.getItem('userProfilePhoto') || '../images/default-avatar.png',
+        dietary: {}
     };
     
-    // Initialize UI
-    function initUI() {
-        loadUserProfile();
-        updateStatistics();
-        loadAccessibilitySettings();
-    }
-
-    // Load user profile from localStorage or use defaults
-    function loadUserProfile() {
-        const storedProfile = JSON.parse(localStorage.getItem('userProfile')) || {
-            name: 'User Name',
-            email: 'user@example.com',
-            dob: '2000-01-01',
-            photo: null,
-            dietaryPrefs: ['Vegetarian']
-        };
-        
-        // Update display elements
-        displayName.textContent = storedProfile.name;
-        displayEmail.textContent = storedProfile.email;
-        
-        // Format date for display
-        const dobDate = new Date(storedProfile.dob);
-        const formattedDOB = `Date of Birth: ${dobDate.toLocaleDateString()}`;
-        displayDOB.textContent = formattedDOB;
-        
-        // Update form inputs
-        nameInput.value = storedProfile.name;
-        emailInput.value = storedProfile.email;
-        dobInput.value = storedProfile.dob;
-        
-        // Set profile image if available
-        if (storedProfile.photo) {
-            profileImage.src = storedProfile.photo;
-            profilePreview.src = storedProfile.photo;
-        }
-        
-        // Update dietary preferences
-        updateDietaryPrefsDisplay(storedProfile.dietaryPrefs);
-        
-        // Update checkboxes in form
-        dietaryCheckboxes.forEach(checkbox => {
-            checkbox.checked = storedProfile.dietaryPrefs.includes(checkbox.id.charAt(0).toUpperCase() + checkbox.id.slice(1));
-        });
-    }
-
-    // Update dietary preferences display
-    function updateDietaryPrefsDisplay(prefs) {
-        dietaryPrefsList.innerHTML = '';
-        if (prefs.length === 0) {
-            dietaryPrefsList.innerHTML = '<li>None specified</li>';
-            return;
-        }
-        
-        prefs.forEach(pref => {
-            const li = document.createElement('li');
-            li.textContent = pref;
-            dietaryPrefsList.appendChild(li);
-        });
+    // Initialize dietary preferences from localStorage
+    dietaryPreferences.forEach(pref => {
+        userData.dietary[pref] = localStorage.getItem(`dietary_${pref}`) === 'true';
+    });
+    
+    // Initialize profile name and photo
+    if (userData.name) {
+        profileNameElement.textContent = userData.name;
     }
     
-    // Update statistics display
-    function updateStatistics() {
-        document.getElementById('totalScans').textContent = stats.totalScans;
-        document.getElementById('monthlyScans').textContent = stats.monthlyScans;
-        document.getElementById('redFlags').textContent = stats.redFlags;
-        document.getElementById('greenFlags').textContent = stats.greenFlags;
+    if (userData.profilePhoto) {
+        profilePhotoElement.src = userData.profilePhoto;
+        photoPreview.src = userData.profilePhoto;
     }
     
-    // Load accessibility settings
-    function loadAccessibilitySettings() {
-        const settings = JSON.parse(localStorage.getItem('accessibilitySettings')) || {
-            darkMode: false,
-            audioOutput: false,
-            fontSize: 'normal',
-            language: 'en'
-        };
-        
-        // Apply dark mode
-        if (settings.darkMode) {
+    // Initialize dark mode
+    if (localStorage.getItem('darkMode') === 'true') {
+        document.body.classList.add('dark-mode');
+        darkModeToggle.checked = true;
+    }
+    
+    // Dark mode toggle functionality
+    darkModeToggle.addEventListener('change', function() {
+        if (this.checked) {
             document.body.classList.add('dark-mode');
-            darkModeToggle.checked = true;
-        }
-        
-        // Set audio option
-        audioOption.checked = settings.audioOutput;
-        
-        // Set font size
-        document.body.classList.add(`font-size-${settings.fontSize}`);
-        
-        // Set language
-        languageSelect.value = settings.language;
-        
-        // Apply language translations if needed
-        if (settings.language === 'hi') {
-            translateToHindi();
-        }
-    }
-    
-    // Save profile changes
-    function saveProfile() {
-        const dietaryPrefs = [];
-        dietaryCheckboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                dietaryPrefs.push(checkbox.id.charAt(0).toUpperCase() + checkbox.id.slice(1));
-            }
-        });
-        
-        const profile = {
-            name: nameInput.value,
-            email: emailInput.value,
-            dob: dobInput.value,
-            photo: profilePreview.src,
-            dietaryPrefs: dietaryPrefs
-        };
-        
-        localStorage.setItem('userProfile', JSON.stringify(profile));
-        loadUserProfile();
-    }
-    
-    // Save accessibility settings
-    function saveAccessibilitySettings(settings) {
-        localStorage.setItem('accessibilitySettings', JSON.stringify(settings));
-    }
-    
-    // Toggle modal
-    function toggleModal() {
-        editProfileModal.style.display = editProfileModal.style.display === 'block' ? 'none' : 'block';
-    }
-    
-    // Event Listeners
-    
-    // Edit Profile Button
-    editProfileBtn.addEventListener('click', toggleModal);
-    
-    // Close modal
-    closeBtn.addEventListener('click', toggleModal);
-    cancelBtn.addEventListener('click', toggleModal);
-    
-    // Close modal if clicked outside
-    window.addEventListener('click', function(event) {
-        if (event.target === editProfileModal) {
-            toggleModal();
+            localStorage.setItem('darkMode', 'true');
+        } else {
+            document.body.classList.remove('dark-mode');
+            localStorage.setItem('darkMode', 'false');
         }
     });
     
-    // Profile form submission
-    profileForm.addEventListener('submit', function(e) {
-        e.preventDefault();
-        saveProfile();
-        toggleModal();
-    });
-    
-    // Profile photo upload
-    profilePhotoUpload.addEventListener('change', function() {
-        const file = this.files[0];
+    // Photo upload handling
+    photoUpload.addEventListener('change', function(event) {
+        const file = event.target.files[0];
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                profilePreview.src = e.target.result;
+                const photoData = e.target.result;
+                photoPreview.src = photoData;
             };
             reader.readAsDataURL(file);
         }
     });
     
-    // Dark mode toggle
-    darkModeToggle.addEventListener('change', function() {
-        document.body.classList.toggle('dark-mode');
-        const settings = JSON.parse(localStorage.getItem('accessibilitySettings')) || {};
-        settings.darkMode = this.checked;
-        saveAccessibilitySettings(settings);
+    // Open edit profile modal from profile photo click
+    photoOverlay.addEventListener('click', function() {
+        openEditProfileModal();
     });
     
-    // Audio option toggle
-    audioOption.addEventListener('change', function() {
-        const settings = JSON.parse(localStorage.getItem('accessibilitySettings')) || {};
-        settings.audioOutput = this.checked;
-        saveAccessibilitySettings(settings);
+    // Open modal when edit profile button is clicked
+    editProfileBtn.addEventListener('click', function() {
+        openEditProfileModal();
+    });
+    
+    function openEditProfileModal() {
+        // Populate form with current user data
+        editNameInput.value = userData.name !== 'Enter Name' ? userData.name : '';
+        editEmailInput.value = userData.email;
+        editDobInput.value = userData.dob;
+        photoPreview.src = userData.profilePhoto;
         
-        // Demo text-to-speech when enabled
-        if (this.checked) {
-            speakText('Audio output is now enabled');
+        // Set checkbox states
+        dietaryPreferences.forEach(pref => {
+            if (document.getElementById(pref)) {
+                document.getElementById(pref).checked = userData.dietary[pref];
+            }
+        });
+        
+        // Show modal
+        modal.classList.add('show');
+    }
+    
+    // Close modal functions
+    function closeModalFunction() {
+        modal.classList.remove('show');
+    }
+    
+    closeModal.addEventListener('click', closeModalFunction);
+    
+    cancelBtn.addEventListener('click', closeModalFunction);
+    
+    // Close modal if clicking outside the content
+    modal.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            closeModalFunction();
         }
     });
     
-    // Font size controls
-    decreaseFontBtn.addEventListener('click', function() {
-        document.body.classList.remove('font-size-normal', 'font-size-large');
-        document.body.classList.add('font-size-small');
-        const settings = JSON.parse(localStorage.getItem('accessibilitySettings')) || {};
-        settings.fontSize = 'small';
-        saveAccessibilitySettings(settings);
+    // Save form data
+    editProfileForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        // Update user data object
+        userData.name = editNameInput.value.trim() || 'Enter Name';
+        userData.email = editEmailInput.value;
+        userData.dob = editDobInput.value;
+        
+        // Update profile photo if changed
+        if (photoPreview.src !== userData.profilePhoto) {
+            userData.profilePhoto = photoPreview.src;
+            profilePhotoElement.src = photoPreview.src;
+            localStorage.setItem('userProfilePhoto', userData.profilePhoto);
+        }
+        
+        // Update dietary preferences
+        dietaryPreferences.forEach(pref => {
+            if (document.getElementById(pref)) {
+                userData.dietary[pref] = document.getElementById(pref).checked;
+            }
+        });
+        
+        // Save to localStorage
+        localStorage.setItem('userName', userData.name);
+        localStorage.setItem('userEmail', userData.email);
+        localStorage.setItem('userDob', userData.dob);
+        
+        dietaryPreferences.forEach(pref => {
+            localStorage.setItem(`dietary_${pref}`, userData.dietary[pref]);
+        });
+        
+        // Update UI
+        profileNameElement.textContent = userData.name;
+        
+        // Close modal
+        closeModalFunction();
+        
+        // Show success message
+        showNotification('Profile updated successfully!');
     });
     
-    resetFontBtn.addEventListener('click', function() {
-        document.body.classList.remove('font-size-small', 'font-size-large');
-        document.body.classList.add('font-size-normal');
-        const settings = JSON.parse(localStorage.getItem('accessibilitySettings')) || {};
-        settings.fontSize = 'normal';
-        saveAccessibilitySettings(settings);
+    // Show notification function
+    function showNotification(message) {
+        // Create notification element
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = message;
+        
+        // Style notification
+        notification.style.position = 'fixed';
+        notification.style.bottom = '20px';
+        notification.style.left = '50%';
+        notification.style.transform = 'translateX(-50%)';
+        notification.style.backgroundColor = 'var(--primary-color)';
+        notification.style.color = 'white';
+        notification.style.padding = '12px 24px';
+        notification.style.borderRadius = '25px';
+        notification.style.boxShadow = '0 3px 10px rgba(0,0,0,0.2)';
+        notification.style.zIndex = '1000';
+        
+        // Add to body
+        document.body.appendChild(notification);
+        
+        // Remove after 3 seconds
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            notification.style.transition = 'opacity 0.5s ease';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 500);
+        }, 3000);
+    }
+    
+    // Font size adjustment
+    const decreaseBtn = document.getElementById('decrease-font');
+    const increaseBtn = document.getElementById('increase-font');
+    const fontSizeIndicator = document.getElementById('font-size');
+    let currentFontSize = localStorage.getItem('fontSize') || 16;
+    currentFontSize = parseInt(currentFontSize);
+    
+    // Initialize font size
+    fontSizeIndicator.textContent = currentFontSize;
+    document.documentElement.style.fontSize = `${currentFontSize}px`;
+    
+    decreaseBtn.addEventListener('click', function() {
+        if (currentFontSize > 12) {
+            currentFontSize -= 2;
+            updateFontSize();
+        }
     });
     
-    increaseFontBtn.addEventListener('click', function() {
-        document.body.classList.remove('font-size-small', 'font-size-normal');
-        document.body.classList.add('font-size-large');
-        const settings = JSON.parse(localStorage.getItem('accessibilitySettings')) || {};
-        settings.fontSize = 'large';
-        saveAccessibilitySettings(settings);
+    increaseBtn.addEventListener('click', function() {
+        if (currentFontSize < 24) {
+            currentFontSize += 2;
+            updateFontSize();
+        }
     });
+    
+    function updateFontSize() {
+        fontSizeIndicator.textContent = currentFontSize;
+        document.documentElement.style.fontSize = `${currentFontSize}px`;
+        localStorage.setItem('fontSize', currentFontSize);
+    }
     
     // Language selection
-    languageSelect.addEventListener('change', function() {
-        const settings = JSON.parse(localStorage.getItem('accessibilitySettings')) || {};
-        settings.language = this.value;
-        saveAccessibilitySettings(settings);
-        
-        if (this.value === 'hi') {
-            translateToHindi();
+    const languageBtns = document.querySelectorAll('.language-btn');
+    let currentLanguage = localStorage.getItem('language') || 'en';
+    
+    // Initialize language
+    languageBtns.forEach(btn => {
+        if (btn.dataset.lang === currentLanguage) {
+            btn.classList.add('active');
         } else {
-            // Reload page to reset to English
-            location.reload();
+            btn.classList.remove('active');
         }
     });
+    updateLanguage();
     
-// Text-to-speech functionality (demo)
-function speakText(text) {
-    if ('speechSynthesis' in window) {
-        const speech = new SpeechSynthesisUtterance();
-        speech.text = text;
-        speech.volume = 1;
-        speech.rate = 1;
-        speech.pitch = 1;
-        
-        // Set language based on current selection
-        const currentLang = languageSelect.value;
-        speech.lang = currentLang === 'hi' ? 'hi-IN' : 'en-US';
-        
-        window.speechSynthesis.speak(speech);
-    }
-}
 
-// Sample Hindi translations for demo
-const hindiTranslations = {
-    'Profile': 'प्रोफ़ाइल',
-    'Edit Profile': 'प्रोफ़ाइल संपादित करें',
-    'User Name': 'उपयोगकर्ता का नाम',
-    'Date of Birth': 'जन्म तिथि',
-    'Dietary Preferences': 'आहार प्राथमिकताएँ',
-    'Vegetarian': 'शाकाहारी',
-    'Vegan': 'शुद्ध शाकाहारी',
-    'Gluten Free': 'ग्लूटेन मुक्त',
-    'Dairy Free': 'डेयरी मुक्त',
-    'Nut Free': 'नट मुक्त',
-    'Statistics': 'आँकड़े',
-    'Total Scans': 'कुल स्कैन',
-    'Scans This Month': 'इस महीने के स्कैन',
-    'Red Flags': 'लाल झंडे',
-    'Green Flags': 'हरे झंडे',
-    'Accessibility Setup': 'अभिगम्यता सेटअप',
-    'Audio Output': 'ऑडियो आउटपुट',
-    'Font Size': 'फ़ॉन्ट आकार',
-    'Language': 'भाषा',
-    'Dark Mode': 'डार्क मोड',
-    'Save Changes': 'परिवर्तन सहेजें',
-    'Cancel': 'रद्द करें',
-    'Change Photo': 'फोटो बदलें',
-    'Name': 'नाम',
-    'Email Address': 'ईमेल पता',
-    'None specified': 'कोई निर्दिष्ट नहीं'
-};
-
-// Basic translation function for demo purposes
-function translateToHindi() {
-    // Find all elements with text and translate if in dictionary
-    document.querySelectorAll('h1, h2, h3, p, button, label, li, option').forEach(el => {
-        const originalText = el.textContent.trim();
-        if (hindiTranslations[originalText]) {
-            el.textContent = hindiTranslations[originalText];
-        }
-    });
-    
-    // Update placeholders
-    nameInput.placeholder = 'आपका नाम';
-    emailInput.placeholder = 'आपका@ईमेल.com';
-    
-    // Update button text
-    editProfileBtn.textContent = hindiTranslations['Edit Profile'];
-    saveBtn.textContent = hindiTranslations['Save Changes'];
-    cancelBtn.textContent = hindiTranslations['Cancel'];
-    
-    // Format DOB in Hindi style if needed
-    const profile = JSON.parse(localStorage.getItem('userProfile')) || {};
-    if (profile.dob) {
-        const dobDate = new Date(profile.dob);
-        displayDOB.textContent = `${hindiTranslations['Date of Birth']}: ${dobDate.toLocaleDateString('hi-IN')}`;
-    }
-}
-
-// Generate audio descriptions for statistics
-function generateStatsAudio() {
-    if (audioOption.checked) {
-        const statsText = `You have completed ${stats.totalScans} total scans, with ${stats.monthlyScans} scans this month. You have marked ${stats.redFlags} red flags and ${stats.greenFlags} green flags.`;
-        speakText(statsText);
-    }
-}
-
-// Add listeners for stats section to read out loud when clicked if audio is enabled
-document.querySelector('.statistics-container').addEventListener('click', generateStatsAudio);
-
-// Initialize the UI when the page loads
-initUI();
-
-// Check if service worker is supported for offline capabilities
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-        navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-        }, function(err) {
-            console.log('ServiceWorker registration failed: ', err);
+            languageBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            currentLanguage = this.dataset.lang;
+            localStorage.setItem('language', currentLanguage);
+            updateLanguage();
         });
-    });
-}
-
-// Simulate loading profile data from a server
-function simulateProfileFetch() {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve({
-                name: 'User Name',
-                email: 'user@example.com',
-                dob: '2000-01-01',
-                dietaryPrefs: ['Vegetarian'],
-                stats: {
-                    totalScans: 42,
-                    monthlyScans: 12,
-                    redFlags: 5,
-                    greenFlags: 37
-                }
-            });
-        }, 500);
-    });
-}
-
-// Additional function to handle form validation
-function validateForm() {
-    let isValid = true;
+    ;
     
-    // Validate name
-    if (nameInput.value.trim() === '') {
-        showError(nameInput, 'Name is required');
-        isValid = false;
-    } else {
-        removeError(nameInput);
-    }
-    
-    // Validate email
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(emailInput.value)) {
-        showError(emailInput, 'Please enter a valid email address');
-        isValid = false;
-    } else {
-        removeError(emailInput);
-    }
-    
-    // Validate DOB
-    if (dobInput.value === '') {
-        showError(dobInput, 'Date of Birth is required');
-        isValid = false;
-    } else {
-        const today = new Date();
-        const birthDate = new Date(dobInput.value);
-        const age = today.getFullYear() - birthDate.getFullYear();
+    function updateLanguage() {
+        // Translation object
+        const translations = {
+            en: {
+                profile: "Profile",
+                editProfile: "Edit Profile",
+                statistics: "Statistics",
+                totalScans: "Total Scans",
+                scansThisMonth: "Scans this Month",
+                redFlags: "Red Flags",
+                greenFlags: "Green Flags",
+                accessibilitySetup: "Accessibility Setup",
+                audioOutput: "Audio Output",
+                convertResults: "Convert scan results to audio file",
+                darkMode: "Dark Mode",
+                darkModeDescription: "Enable dark color theme",
+                fontSize: "Font Size",
+                language: "Language",
+                profilePhoto: "Profile Photo",
+                changePhoto: "Change Photo",
+                name: "Name",
+                email: "Email Address",
+                dob: "Date of Birth",
+                dietaryPreferences: "Dietary Preferences",
+                nonVegetarian: "Non Vegetarian",
+                vegetarian: "Vegetarian",
+                vegan: "Vegan",
+                glutenFree: "Gluten Free",
+                dairyFree: "Dairy Free",
+                nutFree: "Nut Free",
+                save: "Save Changes",
+                cancel: "Cancel"
+            },
+            hi: {
+                profile: "प्रोफाइल",
+                editProfile: "प्रोफाइल संपादित करें",
+                statistics: "आंकड़े",
+                totalScans: "कुल स्कैन",
+                scansThisMonth: "इस महीने के स्कैन",
+                redFlags: "लाल झंडे",
+                greenFlags: "हरे झंडे",
+                accessibilitySetup: "पहुंच सेटअप",
+                audioOutput: "ऑडियो आउटपुट",
+                convertResults: "स्कैन परिणामों को ऑडियो फ़ाइल में बदलें",
+                darkMode: "डार्क मोड",
+                darkModeDescription: "डार्क थीम सक्षम करें",
+                fontSize: "फ़ॉन्ट आकार",
+                language: "भाषा",
+                profilePhoto: "प्रोफाइल चित्र",
+                changePhoto: "चित्र बदलें",
+                name: "नाम",
+                email: "ईमेल पता",
+                dob: "जन्म तिथि",
+                dietaryPreferences: "आहार प्राथमिकताएँ",
+                nonVegetarian: "मांसाहारी",
+                vegetarian: "शाकाहारी",
+                vegan: "शुद्ध शाकाहारी",
+                glutenFree: "ग्लूटेन मुक्त",
+                dairyFree: "डेयरी मुक्त",
+                nutFree: "नट मुक्त",
+                save: "परिवर्तन सहेजें",
+                cancel: "रद्द करें"
+            }
+        };
         
-        if (age < 13) {
-            showError(dobInput, 'You must be at least 13 years old');
-            isValid = false;
-        } else {
-            removeError(dobInput);
-        }
-    }
-    
-    return isValid;
-}
-
-// Show error message
-function showError(input, message) {
-    const formGroup = input.parentElement;
-    let errorElement = formGroup.querySelector('.error-message');
-    
-    if (!errorElement) {
-        errorElement = document.createElement('div');
-        errorElement.className = 'error-message';
-        errorElement.style.color = 'var(--error-color)';
-        errorElement.style.fontSize = 'var(--font-size-small)';
-        errorElement.style.marginTop = '4px';
-        formGroup.appendChild(errorElement);
-    }
-    
-    errorElement.textContent = message;
-    input.style.borderColor = 'var(--error-color)';
-}
-
-// Remove error message
-function removeError(input) {
-    const formGroup = input.parentElement;
-    const errorElement = formGroup.querySelector('.error-message');
-    
-    if (errorElement) {
-        formGroup.removeChild(errorElement);
-    }
-    
-    input.style.borderColor = '';
-}
-
-// Add validation to form submission
-profileForm.addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    if (validateForm()) {
-        saveProfile();
-        toggleModal();
+        // Update UI text based on selected language
+        document.querySelector('header h1').textContent = translations[currentLanguage].profile;
+        document.querySelector('.edit-btn').textContent = translations[currentLanguage].editProfile;
+        document.querySelector('.stats-container h2').textContent = translations[currentLanguage].statistics;
+        document.querySelectorAll('.stat-label')[0].textContent = translations[currentLanguage].totalScans;
+        document.querySelectorAll('.stat-label')[1].textContent = translations[currentLanguage].scansThisMonth;
+        document.querySelectorAll('.stat-label')[2].textContent = translations[currentLanguage].redFlags;
+        document.querySelectorAll('.stat-label')[3].textContent = translations[currentLanguage].greenFlags;
+        document.querySelector('.accessibility-container h2').textContent = translations[currentLanguage].accessibilitySetup;
         
-        // Show success notification
-        showNotification('Profile updated successfully!', 'success');
+        // Update accessibility options
+        const optionTitles = document.querySelectorAll('.option-title');
+        optionTitles[0].childNodes[0].textContent = translations[currentLanguage].audioOutput;
+        document.querySelectorAll('.option-description')[0].textContent = translations[currentLanguage].convertResults;
+        
+        optionTitles[1].childNodes[0].textContent = translations[currentLanguage].darkMode;
+        document.querySelectorAll('.option-description')[1].textContent = translations[currentLanguage].darkModeDescription;
+        
+        optionTitles[2].textContent = translations[currentLanguage].fontSize;
+        optionTitles[3].textContent = translations[currentLanguage].language;
+        
+        // Update modal text
+        document.querySelector('.modal-header h2').textContent = translations[currentLanguage].editProfile;
+        document.querySelector('.photo-upload-container > label').textContent = translations[currentLanguage].profilePhoto;
+        document.querySelector('.upload-btn').textContent = translations[currentLanguage].changePhoto;
+        document.querySelector('label[for="edit-name"]').textContent = translations[currentLanguage].name;
+        document.querySelector('label[for="edit-email"]').textContent = translations[currentLanguage].email;
+        document.querySelector('label[for="edit-dob"]').textContent = translations[currentLanguage].dob;
+        document.querySelector('.form-group:nth-child(5) > label').textContent = translations[currentLanguage].dietaryPreferences;
+        
+        // Update dietary preference labels
+        document.querySelector('label[for="non-vegetarian"]').textContent = translations[currentLanguage].nonVegetarian;
+        document.querySelector('label[for="vegetarian"]').textContent = translations[currentLanguage].vegetarian;
+        document.querySelector('label[for="vegan"]').textContent = translations[currentLanguage].vegan;
+        document.querySelector('label[for="gluten-free"]').textContent = translations[currentLanguage].glutenFree;
+        document.querySelector('label[for="dairy-free"]').textContent = translations[currentLanguage].dairyFree;
+        document.querySelector('label[for="nut-free"]').textContent = translations[currentLanguage].nutFree;
+        
+        document.querySelector('.cancel-btn').textContent = translations[currentLanguage].cancel;
+        document.querySelector('.save-btn').textContent = translations[currentLanguage].save;
     }
-});
+    
+    // Audio output toggle
+    const audioToggle = document.getElementById('audio-toggle');
+    
+    // Initialize audio setting
+    if (localStorage.getItem('audioEnabled') === 'true') {
+        audioToggle.checked = true;
+    }
+    
+    audioToggle.addEventListener('change', function() {
+        localStorage.setItem('audioEnabled', this.checked);
+    });
 
-// Notification function
-function showNotification(message, type = 'info') {
-    const notification = document.createElement('div');
-    notification.className = `notification ${type}`;
-    notification.textContent = message;
-    
-    // Style the notification
-    notification.style.position = 'fixed';
-    notification.style.bottom = '20px';
-    notification.style.right = '20px';
-    notification.style.padding = '10px 20px';
-    notification.style.borderRadius = 'var(--border-radius)';
-    notification.style.backgroundColor = type === 'success' ? 'var(--success-color)' : 'var(--primary-color)';
-    notification.style.color = 'white';
-    notification.style.boxShadow = 'var(--shadow)';
-    notification.style.zIndex = '9999';
-    notification.style.transition = 'all 0.3s ease';
-    
-    document.body.appendChild(notification);
-    
-    // Remove notification after 3 seconds
-    setTimeout(() => {
-        notification.style.opacity = '0';
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 300);
-    }, 3000);
-}
-});
+   
