@@ -1,118 +1,192 @@
 /* ========= SHARED STYLES ========= */
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background: linear-gradient(135deg, #f0f4f8, #ffffff);
-    margin: 0;
-    padding: 0;
-    color: #222;
-  }
-  
-  
-  
-  
-  /* ========= SIGNUP PAGE ========= */
-  
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #f0f4f8, #ffffff);
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+
+/* ========= SIGNUP PAGE ========= */
+
+.signup-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem;
+  text-align: center;
+  animation: fadeIn 0.8s ease-in;
+}
+
+.logo {
+  width: 80px;
+  margin-bottom: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.signup-container h1 {
+  font-size: 1.8rem;
+  margin-bottom: 0.3rem;
+}
+
+.signup-container p {
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.signup-form input {
+  width: 100%;
+  padding: 0.9rem;
+  margin: 0.6rem 0;
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  font-size: 1rem;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.signup-form input:focus {
+  border-color: #4CAF50;
+  box-shadow: 0 0 6px rgba(76, 175, 80, 0.3);
+  outline: none;
+}
+.btn {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 0.9rem 1.2rem;
+  font-weight: 600;
+  width: 100%;
+  margin-top: 1rem;
+  border-radius: 30px; /* 🔵 Rounded like "Skip for now" */
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.2);
+}
+
+.btn:hover {
+  background-color: #43a047;
+  box-shadow: 0 6px 14px rgba(76, 175, 80, 0.3);
+}
+
+
+.login-link {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+}
+
+.login-link a {
+  color: #4CAF50;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+/* ========= NEW GOOGLE + SKIP OPTIONS ========= */
+
+.alternative-options {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: 1px solid #ccc;
+  padding: 0.8rem 1rem;
+  width: 100%;
+  border-radius: 50px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #444;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: all 0.3s ease;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  cursor: pointer;
+}
+
+.google-btn img {
+  width: 22px;
+  height: 22px;
+}
+
+.google-btn:hover {
+  border-color: #4CAF50;
+  box-shadow: 0 0 8px rgba(76, 175, 80, 0.2);
+  color: #4CAF50;
+}
+.skip-link {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  color: #4CAF50;
+  border: 1px solid #4CAF50;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  background-color: transparent;
+}
+
+.skip-link:hover {
+  background-color: #4CAF50;
+  color: white;
+}
+
+
+/* ========= RESPONSIVENESS ========= */
+
+@media (min-width: 600px) {
   .signup-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 2.5rem 1rem;
-    text-align: center;
-    animation: fadeIn 0.8s ease-in;
+    padding: 3rem;
+    background-color: #fff;
+    border: 1px solid #eaeaea;
+    border-radius: 20px;
+    margin-top: 4rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   }
-  
-  .logo {
-    width: 80px;
-    margin-bottom: 1.5rem;
-    border-radius: 16px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  }
-  
+
   .signup-container h1 {
-    font-size: 1.8rem;
-    margin-bottom: 0.3rem;
+    font-size: 2.1rem;
   }
-  
-  .signup-container p {
-    font-size: 1rem;
-    color: #666;
-    margin-bottom: 1.5rem;
-  }
-  
+
   .signup-form input {
-    width: 100%;
-    padding: 0.9rem;
-    margin: 0.6rem 0;
-    border: 1px solid #ccc;
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: border-color 0.3s, box-shadow 0.3s;
+    font-size: 1.1rem;
   }
-  
-  .signup-form input:focus {
-    border-color: #4CAF50;
-    box-shadow: 0 0 6px rgba(76, 175, 80, 0.3);
-    outline: none;
+}
+
+/* ========= ANIMATIONS ========= */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
   }
-  
-  .btn {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 1rem;
-    font-weight: bold;
-    width: 100%;
-    margin-top: 1rem;
-    border-radius: 12px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .btn:hover {
-    background-color: #43a047;
-  }
-  
-  .login-link {
-    margin-top: 1.5rem;
-    font-size: 0.9rem;
-  }
-  
-  .login-link a {
-    color: #4CAF50;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  /* ========= RESPONSIVENESS ========= */
-  
-  @media (min-width: 600px) {
-    .signup-container {
-      padding: 3rem;
-      background-color: #fff;
-      border: 1px solid #eaeaea;
-      border-radius: 20px;
-      margin-top: 4rem;
-      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
-    }
-  
-    .signup-container h1 {
-      font-size: 2.1rem;
-    }
-  
-    .signup-form input {
-      font-size: 1.1rem;
-    }
-  }
-  
-  /* ========= ANIMATIONS ========= */
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(15px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+}
+
+/* ========= VALIDATION ========= */
+
+.validation-message {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  color: #d32f2f;
+}
+
+.validation-message.success {
+  color: #388e3c;
+}
+
+.input-error {
+  border-color: #d32f2f !important;
+}

@@ -1,27 +1,47 @@
-<!-- history.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scan History - FoodSnap</title>
-  <link rel="stylesheet" href="styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FoodSnap - History</title>
+  <link rel="stylesheet" href="../css/history.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="page-container">
-    <h2>Scan History</h2>
-    <ul>
-      <li>Apple Juice - Apr 15, 2025</li>
-      <li>Chips - Apr 14, 2025</li>
-      <li>Cereal - Apr 13, 2025</li>
-    </ul>
+  <header>
+    <h1>📜 Scan History</h1>
+  </header>
+
+  <section class="filters">
+    <input type="text" id="search" placeholder="🔍 Search by name or barcode"/>
+    <input type="date" id="dateFilter"/>
+    <select id="verdictFilter">
+      <option value="">All Verdicts</option>
+      <option value="Good">✅ Good</option>
+      <option value="Moderate">⚠️ Moderate</option>
+      <option value="Bad">❌ Bad</option>
+    </select>
+    <button onclick="exportCSV()">Export CSV</button>
+    <button onclick="exportPDF()">Export PDF</button>
+  </section>
+
+  <section class="history-list" id="historyList">
+    <!-- Items populated here -->
+  </section>
+
+  <section class="summary">
+    <h2>📊 Weekly Summary</h2>
+    <canvas id="summaryChart"></canvas>
+  </section>
+
+  <!-- Modal for detailed view -->
+  <div id="detailModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <div id="modalDetails"></div>
+    </div>
   </div>
-  <footer class="bottom-nav">
-    <a href="home.html" class="nav-link">🏠 Home</a>
-    <a href="scan.html" class="nav-link">📷 Scan</a>
-    <a href="history.html" class="nav-link active">🕘 History</a>
-    <a href="settings.html" class="nav-link">⚙️ Settings</a>
-    <a href="profile.html" class="nav-link">👤 Profile</a>
-  </footer>
+
+  <script src="../js/history.js"></script>
 </body>
 </html>

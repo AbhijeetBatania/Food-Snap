@@ -371,4 +371,38 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('audioEnabled', this.checked);
     });
 
-   
+   document.addEventListener('DOMContentLoaded', () => {
+  const languageButtons = document.querySelectorAll('.language-btn');
+
+  // Apply saved language on load
+  const savedLang = localStorage.getItem('language') || 'en';
+  document.body.classList.toggle('hindi-mode', savedLang === 'hi');
+
+  // Update active button state
+  languageButtons.forEach(btn => {
+    if (btn.dataset.lang === savedLang) {
+      btn.classList.add('active');
+    } else {
+      btn.classList.remove('active');
+    }
+  });
+
+  // Handle button click
+  languageButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const selectedLang = btn.dataset.lang;
+
+      // Save language preference
+      localStorage.setItem('language', selectedLang);
+
+      // Apply Hindi mode class
+      document.body.classList.toggle('hindi-mode', selectedLang === 'hi');
+
+      // Update active button styles
+      languageButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      alert('Language preference saved. Navigate to other pages to see the change.');
+    });
+  });
+});

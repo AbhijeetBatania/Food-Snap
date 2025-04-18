@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FoodSnap | Badges & Points</title>
+  <link rel="stylesheet" href="../css/badges.css" />
+</head>
+<body>
+  <div class="badges-container">
+    <header>
+      <h1>🏆 Your Achievements</h1>
+      <p class="subtitle">Earn points, unlock badges, and celebrate your health journey!</p>
+      <div class="points-bar">
+        <span>Total Points: <strong id="totalPoints">0</strong></span>
+        <button id="sortToggle">Sort: Newest</button>
+      </div>
+    </header>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="earned">Earned</button>
+      <button class="filter-btn" data-filter="locked">Locked</button>
+    </div>
+
+    <section id="badgesGrid" class="badges-grid">
+      <!-- Badges populated by JS -->
+    </section>
+  </div>
+
+  <div id="celebrationModal" class="modal hidden">
+    <div class="modal-content">
+      <h2>🎉 Congratulations!</h2>
+      <p>You’ve just earned a new badge!</p>
+      <button onclick="closeCelebration()">Awesome!</button>
+    </div>
+  </div>
+
+  <script src="../js/badges.js"></script>
+</body>
+</html>

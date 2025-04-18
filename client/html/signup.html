@@ -14,14 +14,22 @@
     <h1>Create Account</h1>
     <p>Join us to explore food and health insights.</p>
 
-    <form class="signup-form">
-      <input type="text" placeholder="Full Name" required />
-      <input type="email" placeholder="Email Address" required />
-      <input type="password" placeholder="Password" required />
-      <input type="password" placeholder="Confirm Password" required />
-      
-      <button type="submit" id="loginBtn" class="btn" onclick="window.location.href='profilesetup.html'">Sign Up</button>
+    <form class="signup-form" id="signupForm">
+      <input type="text" id="fullName" placeholder="Full Name" required />
+      <input type="email" id="email" placeholder="Email Address" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" required />
+      <div id="passwordMatchMessage" class="validation-message"></div>
+
+      <button type="submit" id="loginBtn" class="btn">Sign Up</button>
     </form>
+
+    <div class="alternative-options">
+      <button class="google-btn">
+        <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google icon" /> Continue with Google
+      </button>
+      <a href="home.html" class="skip-link">Skip for now</a>
+    </div>
 
     <p class="login-link">Already have an account? <a href="login.html">Log In</a></p>
   </div>
@@ -29,3 +37,4 @@
   <script src="../js/signup.js"></script>
 </body>
 </html>
+
