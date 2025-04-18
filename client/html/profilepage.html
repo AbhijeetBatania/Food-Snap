@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile | Food-Snap</title>
+    <link rel="stylesheet" href="../css/profilepage.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Profile</h1>
+            <button class="edit-btn" id="edit-profile-btn">Edit Profile</button>
+        </header>
+        
+        <div class="profile-header">
+            <div class="profile-photo-container">
+                <img src="/public/default-avatar.png" alt="Profile Photo" id="profile-photo" class="profile-photo">
+                <div class="photo-overlay" id="photo-overlay">
+                    <span class="edit-icon">&#9998;</span>
+                </div>
+            </div>
+            <div class="profile-name" id="profile-name">Enter Name</div>
+        </div>
+        
+        <div class="stats-container">
+            <h2>Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-box">
+                    <div class="stat-number">278</div>
+                    <div class="stat-label">Total Scans</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">42</div>
+                    <div class="stat-label">Scans this Month</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">18</div>
+                    <div class="stat-label">Red Flags</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-number">56</div>
+                    <div class="stat-label">Green Flags</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="accessibility-container">
+            <h2>Accessibility Setup</h2>
+            <div class="accessibility-options">
+                <div class="accessibility-option">
+                    <div class="option-title">
+                        Audio Output
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="audio-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="option-description">Convert scan results to audio file</div>
+                </div>
+                
+                <div class="accessibility-option">
+                    <div class="option-title">
+                        Dark Mode
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="dark-mode-toggle">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="option-description">Enable dark color theme</div>
+                </div>
+                
+                <div class="accessibility-option">
+                    <div class="option-title">Font Size</div>
+                    <div class="font-size-controls">
+                        <button class="font-btn" id="decrease-font">-</button>
+                        <span class="font-size-indicator" id="font-size">16</span>
+                        <button class="font-btn" id="increase-font">+</button>
+                    </div>
+                </div>
+                
+                <div class="accessibility-option">
+                    <div class="option-title">Language</div>
+                    <div class="language-selector">
+                        <button class="language-btn active" data-lang="en">English</button>
+                        <button class="language-btn" data-lang="hi">हिन्दी</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Edit Profile Modal -->
+    <div id="edit-profile-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Profile</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="edit-profile-form">
+                    <div class="form-group photo-upload-container">
+                        <label>Profile Photo</label>
+                        <div class="photo-preview-container">
+                            <img src="/public/default-avatar.png" alt="Profile Preview" id="photo-preview" class="photo-preview">
+                            <div class="upload-btn-wrapper">
+                                <button type="button" class="upload-btn">Change Photo</button>
+                                <input type="file" id="photo-upload" accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-name">Name</label>
+                        <input type="text" id="edit-name" placeholder="Enter your name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-email">Email Address</label>
+                        <input type="email" id="edit-email" placeholder="Enter your email">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-dob">Date of Birth</label>
+                        <input type="date" id="edit-dob">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Dietary Preferences</label>
+                        <div class="checkbox-group">
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="non-vegetarian" name="dietary">
+                                <label for="non-vegetarian">Non Vegetarian</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="vegetarian" name="dietary">
+                                <label for="vegetarian">Vegetarian</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="vegan" name="dietary">
+                                <label for="vegan">Vegan</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="gluten-free" name="dietary">
+                                <label for="gluten-free">Gluten Free</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="dairy-free" name="dietary">
+                                <label for="dairy-free">Dairy Free</label>
+                            </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="nut-free" name="dietary">
+                                <label for="nut-free">Nut Free</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="cancel-btn">Cancel</button>
+                        <button type="submit" class="save-btn">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="../js/profilepage.js"></script>
+</body>
+</html>

@@ -7,6 +7,21 @@
     --medium-gray: #ced4da;
     --success-color: #28a745;
     --danger-color: #dc3545;
+    --bg-color: #f8f9fa;
+    --card-bg-color: white;
+    --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.dark-mode {
+    --primary-color: #4da872;
+    --primary-dark: #3a8056;
+    --secondary-color: #2c3e50;
+    --text-color: #f0f0f0;
+    --light-gray: #495057;
+    --medium-gray: #6c757d;
+    --bg-color: #121212;
+    --card-bg-color: #1e1e1e;
+    --card-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 * {
@@ -17,9 +32,10 @@
 }
 
 body {
-    background-color: #f8f9fa;
+    background-color: var(--bg-color);
     color: var(--text-color);
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
@@ -43,73 +59,93 @@ header {
     margin-bottom: 20px;
 }
 
-.profile-image {
-    width: 80px;
-    height: 80px;
+.profile-photo-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
-    background-color: var(--medium-gray);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     overflow: hidden;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }
 
-.profile-image img {
+.profile-photo {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
+.photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.profile-photo-container:hover .photo-overlay {
+    opacity: 1;
+}
+
+.edit-icon {
+    color: white;
+    font-size: 1.5rem;
+}
+
 .profile-name {
-    font-size: 1.2rem;
+    font-size: 1.8rem;
     font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.profile-name:hover {
-    background-color: var(--light-gray);
-}
-
-.profile-name-input {
-    font-size: 1.2rem;
-    font-weight: bold;
-    padding: 5px 10px;
-    border: 1px solid var(--medium-gray);
-    border-radius: 4px;
     text-align: center;
+    margin-bottom: 5px;
 }
 
 .edit-btn {
     background-color: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 20px;
-    padding: 8px 16px;
-    font-size: 0.9rem;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s ease;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .edit-btn:hover {
     background-color: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.edit-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .stats-container {
-    background-color: white;
+    background-color: var(--card-bg-color);
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--card-shadow);
     padding: 20px;
     margin-bottom: 20px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .stats-container h2 {
     font-size: 1.1rem;
     margin-bottom: 15px;
-    color: #495057;
+    color: var(--text-color);
 }
 
 .stats-grid {
@@ -134,41 +170,21 @@ header {
 
 .stat-label {
     font-size: 0.8rem;
-    color: #6c757d;
-}
-
-.flag-stats {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
-}
-
-.flag-stat {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1;
-}
-
-.red-flag {
-    color: var(--danger-color);
-}
-
-.green-flag {
-    color: var(--success-color);
+    color: var(--medium-gray);
 }
 
 .accessibility-container {
-    background-color: white;
+    background-color: var(--card-bg-color);
     border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--card-shadow);
     padding: 20px;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .accessibility-container h2 {
     font-size: 1.1rem;
     margin-bottom: 15px;
-    color: #495057;
+    color: var(--text-color);
 }
 
 .accessibility-options {
@@ -189,6 +205,12 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: var(--text-color);
+}
+
+.option-description {
+    color: var(--medium-gray);
+    font-size: 0.9rem;
 }
 
 .toggle-switch {
@@ -247,7 +269,8 @@ input:checked + .slider:before {
     height: 32px;
     border-radius: 50%;
     border: 1px solid var(--medium-gray);
-    background-color: white;
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -260,6 +283,7 @@ input:checked + .slider:before {
     min-width: 30px;
     text-align: center;
     font-weight: 500;
+    color: var(--text-color);
 }
 
 .language-selector {
@@ -273,7 +297,8 @@ input:checked + .slider:before {
     padding: 8px 12px;
     border-radius: 20px;
     border: 1px solid var(--medium-gray);
-    background-color: white;
+    background-color: var(--card-bg-color);
+    color: var(--text-color);
     cursor: pointer;
     transition: all 0.2s ease;
 }
@@ -282,6 +307,202 @@ input:checked + .slider:before {
     background-color: var(--primary-color);
     color: white;
     border-color: var(--primary-color);
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-content {
+    background-color: var(--card-bg-color);
+    border-radius: 12px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    animation: modalFadeIn 0.3s;
+    color: var(--text-color);
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--light-gray);
+}
+
+.modal-header h2 {
+    font-size: 1.2rem;
+    color: var(--text-color);
+}
+
+.close-modal {
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    color: var(--medium-gray);
+}
+
+.close-modal:hover {
+    color: var(--text-color);
+}
+
+.modal-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-color);
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="date"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--medium-gray);
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.photo-upload-container {
+    text-align: center;
+}
+
+.photo-preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.photo-preview {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+.upload-btn-wrapper {
+    position: relative;
+    overflow: hidden;
+    display: inline-block;
+}
+
+.upload-btn {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 8px 15px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+.upload-btn-wrapper input[type=file] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.checkbox-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-item input[type="checkbox"] {
+    margin-right: 8px;
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+}
+
+.checkbox-item label {
+    margin-bottom: 0;
+    color: var(--text-color);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.cancel-btn, .save-btn {
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cancel-btn {
+    background-color: var(--card-bg-color);
+    color: var(--medium-gray);
+    border: 1px solid var(--medium-gray);
+}
+
+.save-btn {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.cancel-btn:hover {
+    background-color: var(--light-gray);
+}
+
+.save-btn:hover {
+    background-color: var(--primary-dark);
 }
 
 /* Responsive design for larger screens */
@@ -296,8 +517,12 @@ input:checked + .slider:before {
     
     .accessibility-options {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 15px;
+    }
+    
+    .checkbox-group {
+        grid-template-columns: repeat(3, 1fr);
     }
 }
 
@@ -306,4 +531,34 @@ input:checked + .slider:before {
     .container {
         max-width: 960px;
     }
+    
+    .accessibility-options {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
+
+
+.scan-button-circle {
+  width: 56px;
+  height: 56px;
+  background: #4CAF50;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: var(--spacing-xs);
+  color: white;
+  box-shadow: 0 4px 10px rgba(76, 175, 80, 0.4);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.scan-button-circle i {
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.scan-button:hover .scan-button-circle {
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(76, 175, 80, 0.5);
+}
+

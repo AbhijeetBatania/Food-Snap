@@ -24,12 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
       menuPopup.classList.add('active');
     });
     
-    // Handle scan button click directly without popup
-    const scanNavButton = document.getElementById('scanNavButton');
-    
-    scanNavButton.addEventListener('click', () => {
-      alert('Scanning feature activated!');
-    });
+  
     
     // Close popups
     const closeButtons = document.querySelectorAll('.close-popup');
