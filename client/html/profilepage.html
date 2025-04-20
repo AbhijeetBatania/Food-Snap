@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile | Food-Snap</title>
     <link rel="stylesheet" href="../css/profilepage.css">
-    <link rel="stylesheet" href="../css/common.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
         <header>
+            <a href="home.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
             <h1>Profile</h1>
             <button class="edit-btn" id="edit-profile-btn">Edit Profile</button>
         </header>
@@ -90,6 +90,22 @@
                 </div>
             </div>
         </div>
+
+        <div class="support-container">
+            <button id="support-btn" class="support-btn">
+                <i class="fas fa-comment-dots"></i> Get Support - Chat with us
+            </button>
+        </div>
+
+        <footer>
+            <div class="footer-links">
+                <a href="about.html">About</a>
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Use</a>
+                <a href="legal.html">Legal Disclaimer</a>
+                <a href="developers.html">About the Developers</a>
+            </div>
+        </footer>
     </div>
     
     <!-- Edit Profile Modal -->
@@ -120,6 +136,11 @@
                     <div class="form-group">
                         <label for="edit-email">Email Address</label>
                         <input type="email" id="edit-email" placeholder="Enter your email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="edit-phone">Phone Number</label>
+                        <input type="tel" id="edit-phone" placeholder="Enter your phone number">
                     </div>
                     
                     <div class="form-group">
@@ -154,6 +175,10 @@
                                 <input type="checkbox" id="nut-free" name="dietary">
                                 <label for="nut-free">Nut Free</label>
                             </div>
+                            <div class="checkbox-item">
+                                <input type="checkbox" id="other-pref" name="dietary">
+                                <label for="other-pref">Other</label>
+                            </div>
                         </div>
                     </div>
                     
@@ -166,6 +191,31 @@
         </div>
     </div>
     
+    <!-- Support Chat Modal -->
+    <div id="support-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Chat Support</h2>
+                <span class="close-modal" id="close-support">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="chat-container">
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="message support">
+                            <p>Hello! How can I help you today?</p>
+                            <span class="message-time">Just now</span>
+                        </div>
+                    </div>
+                    <div class="chat-input">
+                        <input type="text" id="chat-input-field" placeholder="Type your message...">
+                        <button id="send-chat">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script src="../js/profilepage.js"></script>
 </body>
