@@ -1,10 +1,14 @@
-document.addEventListener('DOMContentLoaded', function() {
+import { auth } from './firebase-init.js';
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
+document.addEventListener('DOMContentLoaded', function () {
   const loginForm = document.querySelector('.login-form');
   const emailInput = loginForm.querySelector('input[type="email"]');
   const passwordInput = loginForm.querySelector('input[type="password"]');
   const submitBtn = document.getElementById('submitBtn');
 
-  loginForm.addEventListener('submit', function(event) {
+  // Regular login with email and password
+  loginForm.addEventListener('submit', function (event) {
     event.preventDefault();
     clearErrors();
 
@@ -24,10 +28,33 @@ document.addEventListener('DOMContentLoaded', function() {
       submitBtn.innerHTML = '<span class="loading-spinner"></span> Logging in...';
       submitBtn.disabled = true;
 
-      setTimeout(function() {
-        window.location.href = 'home.html';
-      }, 1500);
+      // Firebase login with email and password
+      signInWithEmailAndPassword(auth, emailInput.value, passwordInput.value)
+        .then(userCredential => {
+          window.location.href = 'home.html'; // Redirect to home page after successful login
+        })
+        .catch(error => {
+          console.error(error);
+          showError(passwordInput, 'Invalid email or password');
+          submitBtn.innerHTML = 'Login';
+          submitBtn.disabled = false;
+        });
     }
+  });
+
+  // Google login functionality
+  const googleLoginBtn = document.querySelector('.google-login');
+  const provider = new GoogleAuthProvider();
+
+  googleLoginBtn.addEventListener('click', function () {
+    signInWithPopup(auth, provider)
+      .then(result => {
+        window.location.href = 'home.html'; // Redirect to home page after Google login
+      })
+      .catch(error => {
+        console.error(error);
+        showError(emailInput, 'Google login failed');
+      });
   });
 
   emailInput.addEventListener('input', () => {
@@ -84,4 +111,3 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 });
-
