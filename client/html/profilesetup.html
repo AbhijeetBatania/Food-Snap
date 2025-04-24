@@ -1,15 +1,15 @@
+<!-- Save as: FoodSnap/client/html/profilesetup.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Profile Setup</title>
-  <link rel="stylesheet" href="../css/profilesetup.css">
+  <link rel="stylesheet" href="../css/profilesetup.css" />
   <script type="module" src="../js/firebase-init.js"></script>
   <script type="module" src="../js/profilesetup.js"></script>
 
   <style>
-    /* Ensure the success popup is hidden by default */
     .hidden {
       display: none !important;
     }
@@ -22,66 +22,83 @@
       <form id="profileForm">
         <div class="form-section">
           <h2>Personal Information</h2>
+
           <div class="form-group">
             <label for="fullName">Full Name*</label>
-            <input type="text" id="fullName" name="fullName" required>
+            <input type="text" id="fullName" name="fullName" required />
           </div>
-          
+
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
+            <input type="email" id="email" name="email" required />
           </div>
-          
+
           <div class="form-group">
             <label for="phone">Phone Number</label>
-            <input type="tel" id="phone" name="phone">
+            <input type="tel" id="phone" name="phone" />
           </div>
-          
+
           <div class="form-group">
             <label for="birthdate">Date of Birth</label>
-            <input type="date" id="birthdate" name="birthdate">
+            <input type="date" id="birthdate" name="birthdate" />
           </div>
+
+          <!-- ✅ NEW FIELDS START -->
+          <div class="form-group">
+            <label>Gender</label>
+            <div class="radio-group">
+              <div class="radio-option"><input type="radio" name="gender" value="Male" /> Male</div>
+              <div class="radio-option"><input type="radio" name="gender" value="Female" /> Female</div>
+              <div class="radio-option"><input type="radio" name="gender" value="Other" /> Other</div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" min="1" max="120" />
+          </div>
+
+          <div class="form-group">
+            <label for="height">Height (cm)</label>
+            <input type="number" id="height" name="height" />
+          </div>
+
+          <div class="form-group">
+            <label for="weight">Weight (kg)</label>
+            <input type="number" id="weight" name="weight" />
+          </div>
+
+          <div class="form-group">
+            <label for="activityLevel">Activity Level</label>
+            <select id="activityLevel" name="activityLevel">
+              <option value="">Select...</option>
+              <option value="Sedentary">Sedentary</option>
+              <option value="Light">Light</option>
+              <option value="Moderate">Moderate</option>
+              <option value="Active">Active</option>
+              <option value="Very Active">Very Active</option>
+            </select>
+          </div>
+          <!-- ✅ NEW FIELDS END -->
         </div>
-        
+
         <div class="form-section">
           <h2>Dietary Preferences</h2>
-          <div class="checkbox-group">
-            <input type="checkbox" id="vegetarian" name="diet">
-            <label for="vegetarian">Vegetarian</label>
-          </div>
-          <div class="checkbox-group">
-            <input type="checkbox" id="vegan" name="diet">
-            <label for="vegan">Vegan</label>
-          </div>
-          <div class="checkbox-group">
-            <input type="checkbox" id="glutenFree" name="diet">
-            <label for="glutenFree">Gluten Free</label>
-          </div>
-          <div class="checkbox-group">
-            <input type="checkbox" id="dairyFree" name="diet">
-            <label for="dairyFree">Dairy Free</label>
-          </div>
-          <div class="checkbox-group">
-            <input type="checkbox" id="nutFree" name="diet">
-            <label for="nutFree">Nut Free</label>
-          </div>
-          <div class="checkbox-group">
-            <input type="checkbox" id="otherDiet" name="diet">
-            <label for="otherDiet">Other</label>
-          </div>
+          <div class="checkbox-group"><input type="checkbox" id="vegetarian" name="diet"> <label for="vegetarian">Vegetarian</label></div>
+          <div class="checkbox-group"><input type="checkbox" id="vegan" name="diet"> <label for="vegan">Vegan</label></div>
+          <div class="checkbox-group"><input type="checkbox" id="glutenFree" name="diet"> <label for="glutenFree">Gluten Free</label></div>
+          <div class="checkbox-group"><input type="checkbox" id="dairyFree" name="diet"> <label for="dairyFree">Dairy Free</label></div>
+          <div class="checkbox-group"><input type="checkbox" id="nutFree" name="diet"> <label for="nutFree">Nut Free</label></div>
+          <div class="checkbox-group"><input type="checkbox" id="otherDiet" name="diet"> <label for="otherDiet">Other</label></div>
           <div class="form-group" id="otherDietContainer" style="display: none;">
             <label for="otherDietText">Please specify:</label>
-            <input type="text" id="otherDietText" name="otherDietText">
+            <input type="text" id="otherDietText" name="otherDietText" />
           </div>
         </div>
-        
+
         <div class="form-section">
           <h2>Accessibility Setup</h2>
-          <div class="checkbox-group">
-            <input type="checkbox" id="audioOutput" name="accessibility">
-            <label for="audioOutput">Enable Audio Output</label>
-          </div>
-          
+          <div class="checkbox-group"><input type="checkbox" id="audioOutput" name="accessibility"> <label for="audioOutput">Enable Audio Output</label></div>
           <div class="form-group" id="audioSettingsContainer">
             <label for="audioSpeed">Audio Speed</label>
             <select id="audioSpeed" name="audioSpeed">
@@ -92,30 +109,31 @@
             </select>
           </div>
         </div>
-        
-        <div class="form-section">
+
+        <!-- <div class="form-section">
           <h2>Language Preferences</h2>
           <div class="form-group">
             <button type="button" id="languageBtn" class="btn-secondary">Change Language</button>
           </div>
-        </div>
-        
+        </div> -->
+
         <div class="btn-container">
-          <button type="button" id="cancelBtn" class="btn-secondary"  onclick="window.location.href='home.html'">Skip</button>
+          <button type="button" id="cancelBtn" class="btn-secondary" onclick="window.location.href='home.html'">Skip</button>
           <button type="button" id="saveBtn" class="btn-primary">Save Profile</button>
         </div>
       </form>
     </div>
   </div>
-  
-  <div id="languagePopup" class="language-popup hidden">
+
+  <!-- Language Popup -->
+  <!-- <div id="languagePopup" class="language-popup hidden">
     <h3>Select Language</h3>
     <button type="button" class="btn-secondary language-btn" data-lang="en">English</button>
     <button type="button" class="btn-secondary language-btn" data-lang="hi">हिंदी (Hindi)</button>
     <button type="button" class="btn-secondary" id="closeLanguagePopup">Close</button>
-  </div>
+  </div> -->
 
-  <!-- Success Popup - explicitly marked as hidden -->
+  <!-- Success Popup -->
   <div id="successPopup" class="success-popup hidden" style="display: none;">
     <div class="success-content">
       <h3>Success!</h3>
@@ -123,6 +141,7 @@
       <button id="successCloseBtn" class="btn-primary">OK</button>
     </div>
   </div>
+  
 
 </body>
 </html>

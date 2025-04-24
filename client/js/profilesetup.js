@@ -27,11 +27,10 @@ let audioContext;
 let speechSynthesis;
 
 const translations = {
-  en: { /* ... same as before ... */ },
-  hi: { /* ... same as before ... */ }
+  en: { /* ...same as before... */ },
+  hi: { /* ...same as before... */ }
 };
 
-// Hide popup and initialize on load
 document.addEventListener('DOMContentLoaded', () => {
   successPopup = document.getElementById('successPopup');
   successPopup.classList.add('hidden');
@@ -48,7 +47,7 @@ function init() {
   closeLanguagePopup = document.getElementById('closeLanguagePopup');
   languageButtons = document.querySelectorAll('.language-btn');
   cancelBtn = document.getElementById('cancelBtn');
-  saveBtn = document.getElementById('saveBtn');
+  saveBtn = document.getElementById('saveBtn'); // ✅ move this up!
   successPopup = document.getElementById('successPopup');
   successCloseBtn = document.getElementById('successCloseBtn');
   otherDiet = document.getElementById('otherDiet');
@@ -58,8 +57,10 @@ function init() {
 
   audioOutput.addEventListener('change', toggleAudioSettings);
   otherDiet.addEventListener('change', toggleOtherDietField);
-  languageBtn.addEventListener('click', showLanguagePopup);
-  closeLanguagePopup.addEventListener('click', hideLanguagePopup);
+
+  if (languageBtn) languageBtn.addEventListener('click', showLanguagePopup);
+  if (closeLanguagePopup) closeLanguagePopup.addEventListener('click', hideLanguagePopup);
+
   languageButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       currentLanguage = btn.dataset.lang;
@@ -68,7 +69,11 @@ function init() {
     });
   });
 
-  saveBtn.addEventListener('click', saveProfile);
+  saveBtn.addEventListener('click', (e) => {
+    e.preventDefault(); // ✅ important to prevent form reload
+    saveProfile();
+  });
+
   successCloseBtn.addEventListener('click', () => {
     hideSuccessPopup();
     window.location.href = 'home.html';
@@ -182,20 +187,32 @@ function saveProfile() {
 
   onAuthStateChanged(auth, async (user) => {
     if (!user) {
-      alert('You must be logged in to save your profile.');
+      console.log("User is not logged in");
+      alert("You must be logged in to save your profile.");
       return;
     }
 
     const dietaryPreferences = ['vegetarian', 'vegan', 'glutenFree', 'dairyFree', 'nutFree', 'otherDiet']
       .filter(id => document.getElementById(id).checked);
 
+    const gender = document.querySelector('input[name="gender"]:checked')?.value || '';
+    const age = document.getElementById('age')?.value || '';
+    const height = document.getElementById('height')?.value || '';
+    const weight = document.getElementById('weight')?.value || '';
+    const activityLevel = document.getElementById('activityLevel')?.value || '';
+
     const profileData = {
       fullName: document.getElementById('fullName').value,
       email: document.getElementById('email').value,
       phone: document.getElementById('phone').value,
       birthdate: document.getElementById('birthdate').value,
+      gender,
+      age,
+      height,
+      weight,
+      activityLevel,
       dietaryPreferences,
-      otherDietText: document.getElementById('otherDietText').value,
+      otherDietText: document.getElementById('otherDietText')?.value || '',
       accessibility: {
         audioOutput: audioOutput.checked,
         audioSpeed: document.getElementById('audioSpeed').value
