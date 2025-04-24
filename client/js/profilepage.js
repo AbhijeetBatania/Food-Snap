@@ -1,335 +1,226 @@
+// profilepage.js
+
+import { auth, db } from './firebase-init.js';
+import {
+  doc,
+  getDoc,
+  setDoc
+} from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js';
+import {
+  onAuthStateChanged
+} from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js';
+
 // DOM Elements
+const profileName = document.getElementById('profile-name');
+const profilePhoto = document.getElementById('profile-photo');
+const photoPreview = document.getElementById('photo-preview');
+const photoUpload = document.getElementById('photo-upload');
+const photoOverlay = document.getElementById('photo-overlay');
+
 const editProfileBtn = document.getElementById('edit-profile-btn');
 const editProfileModal = document.getElementById('edit-profile-modal');
 const closeModalButtons = document.querySelectorAll('.close-modal');
 const cancelBtn = document.querySelector('.cancel-btn');
 const saveBtn = document.querySelector('.save-btn');
-const profileName = document.getElementById('profile-name');
+
+// Edit Profile Form Inputs
 const editNameInput = document.getElementById('edit-name');
 const editEmailInput = document.getElementById('edit-email');
 const editPhoneInput = document.getElementById('edit-phone');
 const editDobInput = document.getElementById('edit-dob');
+const editGenderInput = document.getElementById('edit-gender');
+const editAgeInput = document.getElementById('edit-age');
+const editHeightInput = document.getElementById('edit-height');
+const editWeightInput = document.getElementById('edit-weight');
+const editActivityInput = document.getElementById('edit-activity');
+
+// Accessibility
 const fontSizeIndicator = document.getElementById('font-size');
 const decreaseFontBtn = document.getElementById('decrease-font');
 const increaseFontBtn = document.getElementById('increase-font');
 const darkModeToggle = document.getElementById('dark-mode-toggle');
 const audioToggle = document.getElementById('audio-toggle');
-const photoOverlay = document.getElementById('photo-overlay');
-const photoUpload = document.getElementById('photo-upload');
-const profilePhoto = document.getElementById('profile-photo');
-const photoPreview = document.getElementById('photo-preview');
 const languageButtons = document.querySelectorAll('.language-btn');
+
+// Chat
 const supportBtn = document.getElementById('support-btn');
 const supportModal = document.getElementById('support-modal');
+const closeSupport = document.getElementById('close-support');
 const chatInput = document.getElementById('chat-input-field');
 const sendChatBtn = document.getElementById('send-chat');
 const chatMessages = document.getElementById('chat-messages');
 
-// User data object to store profile information
-let userData = {
-    name: localStorage.getItem('userName') || 'Enter Name',
-    email: localStorage.getItem('userEmail') || '',
-    phone: localStorage.getItem('userPhone') || '',
-    dob: localStorage.getItem('userDob') || '',
-    photoUrl: localStorage.getItem('userPhotoUrl') || '/public/default-avatar.png',
-    fontSize: parseInt(localStorage.getItem('fontSize')) || 16,
-    darkMode: localStorage.getItem('darkMode') === 'true',
-    audioEnabled: localStorage.getItem('audioEnabled') === 'true',
-    language: localStorage.getItem('language') || 'en'
+// Your Details Section
+const detailGender = document.getElementById('detail-gender');
+const detailAge = document.getElementById('detail-age');
+const detailHeight = document.getElementById('detail-height');
+const detailWeight = document.getElementById('detail-weight');
+const detailActivity = document.getElementById('detail-activity');
+
+// Daily Needs Section
+const needFields = {
+  energy: document.getElementById('need-energy'),
+  fat: document.getElementById('need-fat'),
+  sodium: document.getElementById('need-sodium'),
+  carbs: document.getElementById('need-carbs'),
+  sugar: document.getElementById('need-sugar'),
+  protein: document.getElementById('need-protein'),
+  fiber: document.getElementById('need-fiber'),
+  iron: document.getElementById('need-iron')
 };
 
-// Initialize UI based on saved data
-function initializeUI() {
-    // Set profile data
-    profileName.textContent = userData.name;
-    profilePhoto.src = userData.photoUrl;
-    photoPreview.src = userData.photoUrl;
-    
-    // Set font size
-    fontSizeIndicator.textContent = userData.fontSize;
-    document.documentElement.style.fontSize = `${userData.fontSize}px`;
-    
-    // Set dark mode
-    if (userData.darkMode) {
-        document.body.classList.add('dark-mode');
-        darkModeToggle.checked = true;
+let uid = null;
+
+// AUTH + FETCH
+onAuthStateChanged(auth, async user => {
+  if (user) {
+    uid = user.uid;
+    const docRef = doc(db, 'users', uid);
+    const snap = await getDoc(docRef);
+    if (snap.exists()) {
+      loadProfile(snap.data());
     }
-    
-    // Set audio toggle
-    audioToggle.checked = userData.audioEnabled;
-    
-    // Set language
-    languageButtons.forEach(btn => {
-        if (btn.dataset.lang === userData.language) {
-            btn.classList.add('active');
-        } else {
-            btn.classList.remove('active');
-        }
-    });
-    
-    // Set form values
-    editNameInput.value = userData.name !== 'Enter Name' ? userData.name : '';
-    editEmailInput.value = userData.email;
-    editPhoneInput.value = userData.phone;
-    editDobInput.value = userData.dob;
-}
-
-// Save user data to localStorage
-function saveUserData() {
-    localStorage.setItem('userName', userData.name);
-    localStorage.setItem('userEmail', userData.email);
-    localStorage.setItem('userPhone', userData.phone);
-    localStorage.setItem('userDob', userData.dob);
-    localStorage.setItem('userPhotoUrl', userData.photoUrl);
-    localStorage.setItem('fontSize', userData.fontSize);
-    localStorage.setItem('darkMode', userData.darkMode);
-    localStorage.setItem('audioEnabled', userData.audioEnabled);
-    localStorage.setItem('language', userData.language);
-}
-
-// Modal functions
-function openModal(modal) {
-    modal.classList.add('show');
-    document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
-}
-
-function closeModal(modal) {
-    modal.classList.remove('show');
-    document.body.style.overflow = '';
-}
-
-// Event Listeners
-// Edit Profile Button
-editProfileBtn.addEventListener('click', () => {
-    // Update form fields with current values
-    editNameInput.value = userData.name !== 'Enter Name' ? userData.name : '';
-    editEmailInput.value = userData.email;
-    editPhoneInput.value = userData.phone;
-    editDobInput.value = userData.dob;
-    openModal(editProfileModal);
+  }
 });
 
-// Close Modal Buttons
-closeModalButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const modal = button.closest('.modal');
-        closeModal(modal);
-    });
-});
+function loadProfile(data) {
+  profileName.textContent = data.fullName || 'Enter Name';
+  editNameInput.value = data.fullName || '';
+  editEmailInput.value = data.email || '';
+  editPhoneInput.value = data.phone || '';
+  editDobInput.value = data.birthdate || '';
+  editGenderInput.value = data.gender || '';
+  editAgeInput.value = data.age || '';
+  editHeightInput.value = data.height || '';
+  editWeightInput.value = data.weight || '';
+  editActivityInput.value = data.activityLevel || '';
 
-// Close modal when clicking outside
-window.addEventListener('click', (e) => {
-    if (e.target.classList.contains('modal')) {
-        closeModal(e.target);
-    }
-});
+  detailGender.textContent = data.gender || 'Not Set';
+  detailAge.textContent = data.age || '--';
+  detailHeight.textContent = data.height ? `${data.height} cm` : '-- cm';
+  detailWeight.textContent = data.weight ? `${data.weight} kg` : '-- kg';
+  detailActivity.textContent = data.activityLevel || 'Not Set';
 
-// Cancel Button in Edit Profile
-cancelBtn.addEventListener('click', () => {
+  calculateNeeds(data);
+}
+
+function calculateNeeds(data) {
+  const { gender, age, height, weight, activityLevel } = data;
+  if (!height || !weight || !age || !gender) return;
+
+  const multipliers = {
+    sedentary: 1.2,
+    light: 1.375,
+    moderate: 1.55,
+    active: 1.725,
+    'very-active': 1.9
+  };
+
+  const BMR = gender === 'female'
+    ? 10 * weight + 6.25 * height - 5 * age - 161
+    : 10 * weight + 6.25 * height - 5 * age + 5;
+  const multiplier = multipliers[activityLevel] || 1.2;
+  const calories = BMR * multiplier;
+
+  needFields.energy.textContent = `${Math.round(calories)} kcal`;
+  needFields.protein.textContent = `${Math.round(weight * 1.6)} g`;
+  needFields.fat.textContent = `${Math.round((0.25 * calories) / 9)} g`;
+  needFields.sodium.textContent = `${Math.round(calories * 1.15)} mg`;
+  needFields.carbs.textContent = `${Math.round((0.5 * calories) / 4)} g`;
+  needFields.sugar.textContent = `${Math.round((0.1 * calories) / 4)} g`;
+  needFields.fiber.textContent = `14 g`;
+  needFields.iron.textContent = gender === 'female' ? '18 mg' : '8 mg';
+}
+
+// SAVE PROFILE
+saveBtn.addEventListener('click', async () => {
+  const updated = {
+    fullName: editNameInput.value,
+    email: editEmailInput.value,
+    phone: editPhoneInput.value,
+    birthdate: editDobInput.value,
+    gender: editGenderInput.value,
+    age: parseFloat(editAgeInput.value),
+    height: parseFloat(editHeightInput.value),
+    weight: parseFloat(editWeightInput.value),
+    activityLevel: editActivityInput.value,
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    await setDoc(doc(db, 'users', uid), updated, { merge: true });
+    loadProfile(updated);
     closeModal(editProfileModal);
+  } catch (err) {
+    alert('Failed to save: ' + err.message);
+  }
 });
 
-// Save Profile Changes
-document.getElementById('edit-profile-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    
-    // Update user data
-    userData.name = editNameInput.value || 'Enter Name';
-    userData.email = editEmailInput.value;
-    userData.phone = editPhoneInput.value;
-    userData.dob = editDobInput.value;
-    
-    // Update UI
-    profileName.textContent = userData.name;
-    
-    // Save to localStorage
-    saveUserData();
-    
-    // Close modal
-    closeModal(editProfileModal);
+// MODALS
+editProfileBtn.addEventListener('click', () => openModal(editProfileModal));
+closeModalButtons.forEach(btn => btn.addEventListener('click', () => closeModal(btn.closest('.modal'))));
+cancelBtn.addEventListener('click', () => closeModal(editProfileModal));
+function openModal(m) { m.classList.add('show'); document.body.style.overflow = 'hidden'; }
+function closeModal(m) { m.classList.remove('show'); document.body.style.overflow = ''; }
+
+// PHOTO UPLOAD
+photoOverlay.addEventListener('click', () => photoUpload.click());
+photoUpload.addEventListener('change', e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    profilePhoto.src = reader.result;
+    photoPreview.src = reader.result;
+    localStorage.setItem('userPhotoUrl', reader.result);
+  };
+  reader.readAsDataURL(file);
 });
 
-// Photo upload
-photoOverlay.addEventListener('click', () => {
-    photoUpload.click();
-});
-
-photoUpload.addEventListener('change', (e) => {
-    if (e.target.files && e.target.files[0]) {
-        const reader = new FileReader();
-        
-        reader.onload = (e) => {
-            const newPhotoUrl = e.target.result;
-            userData.photoUrl = newPhotoUrl;
-            profilePhoto.src = newPhotoUrl;
-            photoPreview.src = newPhotoUrl;
-            saveUserData();
-        };
-        
-        reader.readAsDataURL(e.target.files[0]);
-    }
-});
-
-// Font size controls
-decreaseFontBtn.addEventListener('click', () => {
-    if (userData.fontSize > 12) {
-        userData.fontSize -= 1;
-        fontSizeIndicator.textContent = userData.fontSize;
-       document.documentElement.style.fontSize = `${userData.fontSize}px`;
-        saveUserData();
-    }
-});
-
-increaseFontBtn.addEventListener('click', () => {
-    if (userData.fontSize < 24) {
-        userData.fontSize += 1;
-        fontSizeIndicator.textContent = userData.fontSize;
-        document.documentElement.style.fontSize = `${userData.fontSize}px`;
-        saveUserData();
-    }
-});
-
-// Dark mode toggle
+// ACCESSIBILITY
+increaseFontBtn.addEventListener('click', () => adjustFont(1));
+decreaseFontBtn.addEventListener('click', () => adjustFont(-1));
+function adjustFont(delta) {
+  let size = parseInt(fontSizeIndicator.textContent);
+  size = Math.max(12, Math.min(24, size + delta));
+  fontSizeIndicator.textContent = size;
+  document.documentElement.style.fontSize = `${size}px`;
+}
 darkModeToggle.addEventListener('change', () => {
-    userData.darkMode = darkModeToggle.checked;
-    if (userData.darkMode) {
-        document.body.classList.add('dark-mode');
-    } else {
-        document.body.classList.remove('dark-mode');
-    }
-    saveUserData();
+  document.body.classList.toggle('dark-mode', darkModeToggle.checked);
 });
-
-// Audio toggle
 audioToggle.addEventListener('change', () => {
-    userData.audioEnabled = audioToggle.checked;
-    saveUserData();
+  localStorage.setItem('audioEnabled', audioToggle.checked);
 });
+languageButtons.forEach(btn => btn.addEventListener('click', () => {
+  languageButtons.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  localStorage.setItem('language', btn.dataset.lang);
+}));
 
-// Language selector
-languageButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-        languageButtons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        userData.language = btn.dataset.lang;
-        saveUserData();
-        
-        // Here you would implement language change functionality
-        // For example, loading translations from a JSON file
-        // This is just a placeholder for demonstration
-        if (userData.language === 'hi') {
-            // Example of how you might update some text elements
-            document.querySelector('header h1').textContent = 'प्रोफाइल';
-            editProfileBtn.textContent = 'प्रोफाइल संपादित करें';
-            // Add more translations as needed
-        } else {
-            document.querySelector('header h1').textContent = 'Profile';
-            editProfileBtn.textContent = 'Edit Profile';
-            // Reset other translations
-        }
-    });
-});
-
-// Support Chat Functionality
-supportBtn.addEventListener('click', () => {
-    openModal(supportModal);
-});
-
-document.getElementById('close-support').addEventListener('click', () => {
-    closeModal(supportModal);
-});
-
+// CHAT SUPPORT
+supportBtn.addEventListener('click', () => openModal(supportModal));
+closeSupport.addEventListener('click', () => closeModal(supportModal));
 sendChatBtn.addEventListener('click', sendMessage);
-chatInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') {
-        sendMessage();
-    }
-});
-
+chatInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
 function sendMessage() {
-    const message = chatInput.value.trim();
-    if (message) {
-        // Add user message
-        addMessage(message, 'user');
-        chatInput.value = '';
-        
-        // Simulate response (in a real app, this would be an API call)
-        setTimeout(() => {
-            const responses = [
-                "Thanks for reaching out! How can I help you with Food-Snap today?",
-                "I understand your concern. Let me check that for you.",
-                "That's a great question about our app. The feature you're looking for can be found in the home screen.",
-                "I'll escalate this issue to our technical team. They'll get back to you soon."
-            ];
-            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-            addMessage(randomResponse, 'support');
-        }, 1000);
-    }
+  const msg = chatInput.value.trim();
+  if (!msg) return;
+  addMessage(msg, 'user');
+  chatInput.value = '';
+  setTimeout(() => addMessage("Thanks! We'll assist you shortly.", 'support'), 1000);
 }
-
 function addMessage(text, sender) {
-    const messageDiv = document.createElement('div');
-    messageDiv.classList.add('message', sender);
-    
-    const messagePara = document.createElement('p');
-    messagePara.textContent = text;
-    
-    const timeSpan = document.createElement('span');
-    timeSpan.classList.add('message-time');
-    timeSpan.textContent = getTimeString();
-    
-    messageDiv.appendChild(messagePara);
-    messageDiv.appendChild(timeSpan);
-    
-    chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight; // Scroll to bottom
+  const div = document.createElement('div');
+  div.className = `message ${sender}`;
+  div.innerHTML = `<p>${text}</p><span class="message-time">${getTimeString()}</span>`;
+  chatMessages.appendChild(div);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 }
-
 function getTimeString() {
-    const now = new Date();
-    let hours = now.getHours();
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const ampm = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12;
-    hours = hours ? hours : 12; // Convert 0 to 12
-    return `${hours}:${minutes} ${ampm}`;
-
+  const now = new Date();
+  let h = now.getHours(), m = now.getMinutes();
+  const ampm = h >= 12 ? 'PM' : 'AM';
+  h = h % 12 || 12;
+  return `${h}:${m.toString().padStart(2, '0')} ${ampm}`;
 }
-
-// Handle dietary preferences checkboxes
-const dietaryCheckboxes = document.querySelectorAll('input[name="dietary"]');
-dietaryCheckboxes.forEach(checkbox => {
-    checkbox.addEventListener('change', () => {
-        // In a real app, you would store these preferences
-        // For now, we'll just console.log them
-        const selectedPreferences = Array.from(dietaryCheckboxes)
-            .filter(cb => cb.checked)
-            .map(cb => cb.id);
-        console.log('Selected dietary preferences:', selectedPreferences);
-        
-        // You could store these in userData and localStorage if needed
-    });
-});
-
-// Initialize the UI when the page loads
-document.addEventListener('DOMContentLoaded', initializeUI);
-
-// Handle mobile responsiveness for modals
-function adjustModalForMobile() {
-    const modalContents = document.querySelectorAll('.modal-content');
-    if (window.innerWidth < 768) {
-        modalContents.forEach(content => {
-            content.style.width = '95%';
-            content.style.maxHeight = '80vh';
-        });
-    } else {
-        modalContents.forEach(content => {
-            content.style.width = '90%';
-            content.style.maxHeight = '90vh';
-        });
-    }
-}
-
-// Run on page load and window resize
-window.addEventListener('resize', adjustModalForMobile);
-adjustModalForMobile();
