@@ -23,7 +23,6 @@ const closeModalButtons = document.querySelectorAll('.close-modal');
 const cancelBtn = document.querySelector('.cancel-btn');
 const saveBtn = document.querySelector('.save-btn');
 
-// Edit Profile Form Inputs
 const editNameInput = document.getElementById('edit-name');
 const editEmailInput = document.getElementById('edit-email');
 const editPhoneInput = document.getElementById('edit-phone');
@@ -34,7 +33,9 @@ const editHeightInput = document.getElementById('edit-height');
 const editWeightInput = document.getElementById('edit-weight');
 const editActivityInput = document.getElementById('edit-activity');
 
-// Accessibility
+// Checkboxes for dietary preferences
+const dietaryCheckboxes = ['vegetarian', 'vegan', 'glutenfree', 'dairyfree', 'nutfree', 'otherDiet'];
+
 const fontSizeIndicator = document.getElementById('font-size');
 const decreaseFontBtn = document.getElementById('decrease-font');
 const increaseFontBtn = document.getElementById('increase-font');
@@ -42,7 +43,6 @@ const darkModeToggle = document.getElementById('dark-mode-toggle');
 const audioToggle = document.getElementById('audio-toggle');
 const languageButtons = document.querySelectorAll('.language-btn');
 
-// Chat
 const supportBtn = document.getElementById('support-btn');
 const supportModal = document.getElementById('support-modal');
 const closeSupport = document.getElementById('close-support');
@@ -50,14 +50,14 @@ const chatInput = document.getElementById('chat-input-field');
 const sendChatBtn = document.getElementById('send-chat');
 const chatMessages = document.getElementById('chat-messages');
 
-// Your Details Section
+// Your Details
 const detailGender = document.getElementById('detail-gender');
 const detailAge = document.getElementById('detail-age');
 const detailHeight = document.getElementById('detail-height');
 const detailWeight = document.getElementById('detail-weight');
 const detailActivity = document.getElementById('detail-activity');
 
-// Daily Needs Section
+// Your Daily Needs
 const needFields = {
   energy: document.getElementById('need-energy'),
   fat: document.getElementById('need-fat'),
@@ -71,12 +71,11 @@ const needFields = {
 
 let uid = null;
 
-// AUTH + FETCH
 onAuthStateChanged(auth, async user => {
   if (user) {
     uid = user.uid;
-    const docRef = doc(db, 'users', uid);
-    const snap = await getDoc(docRef);
+    const userRef = doc(db, 'users', uid);
+    const snap = await getDoc(userRef);
     if (snap.exists()) {
       loadProfile(snap.data());
     }
@@ -95,30 +94,38 @@ function loadProfile(data) {
   editWeightInput.value = data.weight || '';
   editActivityInput.value = data.activityLevel || '';
 
+  // Check dietary checkboxes
+  if (data.dietaryPreferences) {
+    dietaryCheckboxes.forEach(id => {
+      const checkbox = document.getElementById(id);
+      checkbox.checked = data.dietaryPreferences.includes(id);
+    });
+  }
+
   detailGender.textContent = data.gender || 'Not Set';
-  detailAge.textContent = data.age || '--';
+  detailAge.textContent = data.age ? `${data.age}` : '--';
   detailHeight.textContent = data.height ? `${data.height} cm` : '-- cm';
   detailWeight.textContent = data.weight ? `${data.weight} kg` : '-- kg';
   detailActivity.textContent = data.activityLevel || 'Not Set';
 
-  calculateNeeds(data);
+  calculateNeeds(data.gender, data.age, data.height, data.weight, data.activityLevel);
 }
 
-function calculateNeeds(data) {
-  const { gender, age, height, weight, activityLevel } = data;
+function calculateNeeds(gender, age, height, weight, activityLevel) {
   if (!height || !weight || !age || !gender) return;
 
   const multipliers = {
-    sedentary: 1.2,
-    light: 1.375,
-    moderate: 1.55,
-    active: 1.725,
-    'very-active': 1.9
+    Sedentary: 1.2,
+    Light: 1.375,
+    Moderate: 1.55,
+    Active: 1.725,
+    'Very active': 1.9
   };
 
-  const BMR = gender === 'female'
+  const BMR = gender === 'Female'
     ? 10 * weight + 6.25 * height - 5 * age - 161
     : 10 * weight + 6.25 * height - 5 * age + 5;
+
   const multiplier = multipliers[activityLevel] || 1.2;
   const calories = BMR * multiplier;
 
@@ -129,41 +136,49 @@ function calculateNeeds(data) {
   needFields.carbs.textContent = `${Math.round((0.5 * calories) / 4)} g`;
   needFields.sugar.textContent = `${Math.round((0.1 * calories) / 4)} g`;
   needFields.fiber.textContent = `14 g`;
-  needFields.iron.textContent = gender === 'female' ? '18 mg' : '8 mg';
+  needFields.iron.textContent = gender === 'Female' ? '18 mg' : '8 mg';
 }
 
-// SAVE PROFILE
-saveBtn.addEventListener('click', async () => {
+// Save Profile
+saveBtn.addEventListener('click', async (e) => {
+  e.preventDefault();
   const updated = {
     fullName: editNameInput.value,
     email: editEmailInput.value,
     phone: editPhoneInput.value,
     birthdate: editDobInput.value,
     gender: editGenderInput.value,
-    age: parseFloat(editAgeInput.value),
+    age: parseInt(editAgeInput.value),
     height: parseFloat(editHeightInput.value),
     weight: parseFloat(editWeightInput.value),
     activityLevel: editActivityInput.value,
-    timestamp: new Date().toISOString()
+    dietaryPreferences: dietaryCheckboxes.filter(id => document.getElementById(id)?.checked)
   };
 
   try {
-    await setDoc(doc(db, 'users', uid), updated, { merge: true });
+    const userRef = doc(db, 'users', uid);
+    await setDoc(userRef, updated, { merge: true });
     loadProfile(updated);
     closeModal(editProfileModal);
   } catch (err) {
-    alert('Failed to save: ' + err.message);
+    alert('Error saving profile: ' + err.message);
   }
 });
 
-// MODALS
+// Modal logic
+function openModal(modal) {
+  modal.classList.add('show');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(modal) {
+  modal.classList.remove('show');
+  document.body.style.overflow = '';
+}
 editProfileBtn.addEventListener('click', () => openModal(editProfileModal));
 closeModalButtons.forEach(btn => btn.addEventListener('click', () => closeModal(btn.closest('.modal'))));
 cancelBtn.addEventListener('click', () => closeModal(editProfileModal));
-function openModal(m) { m.classList.add('show'); document.body.style.overflow = 'hidden'; }
-function closeModal(m) { m.classList.remove('show'); document.body.style.overflow = ''; }
 
-// PHOTO UPLOAD
+// Photo upload
 photoOverlay.addEventListener('click', () => photoUpload.click());
 photoUpload.addEventListener('change', e => {
   const file = e.target.files[0];
@@ -177,14 +192,14 @@ photoUpload.addEventListener('change', e => {
   reader.readAsDataURL(file);
 });
 
-// ACCESSIBILITY
+// Font and dark mode
 increaseFontBtn.addEventListener('click', () => adjustFont(1));
 decreaseFontBtn.addEventListener('click', () => adjustFont(-1));
-function adjustFont(delta) {
+function adjustFont(change) {
   let size = parseInt(fontSizeIndicator.textContent);
-  size = Math.max(12, Math.min(24, size + delta));
-  fontSizeIndicator.textContent = size;
+  size = Math.min(Math.max(size + change, 12), 24);
   document.documentElement.style.fontSize = `${size}px`;
+  fontSizeIndicator.textContent = size;
 }
 darkModeToggle.addEventListener('change', () => {
   document.body.classList.toggle('dark-mode', darkModeToggle.checked);
@@ -192,27 +207,33 @@ darkModeToggle.addEventListener('change', () => {
 audioToggle.addEventListener('change', () => {
   localStorage.setItem('audioEnabled', audioToggle.checked);
 });
-languageButtons.forEach(btn => btn.addEventListener('click', () => {
-  languageButtons.forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  localStorage.setItem('language', btn.dataset.lang);
-}));
+languageButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    languageButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    localStorage.setItem('language', btn.dataset.lang);
+  });
+});
 
-// CHAT SUPPORT
+// Chat support
 supportBtn.addEventListener('click', () => openModal(supportModal));
 closeSupport.addEventListener('click', () => closeModal(supportModal));
 sendChatBtn.addEventListener('click', sendMessage);
-chatInput.addEventListener('keypress', e => { if (e.key === 'Enter') sendMessage(); });
+chatInput.addEventListener('keypress', e => {
+  if (e.key === 'Enter') sendMessage();
+});
 function sendMessage() {
   const msg = chatInput.value.trim();
   if (!msg) return;
   addMessage(msg, 'user');
   chatInput.value = '';
-  setTimeout(() => addMessage("Thanks! We'll assist you shortly.", 'support'), 1000);
+  setTimeout(() => {
+    addMessage("Thanks! We'll assist you shortly.", 'support');
+  }, 1000);
 }
 function addMessage(text, sender) {
   const div = document.createElement('div');
-  div.className = `message ${sender}`;
+  div.className = 'message ' + sender;
   div.innerHTML = `<p>${text}</p><span class="message-time">${getTimeString()}</span>`;
   chatMessages.appendChild(div);
   chatMessages.scrollTop = chatMessages.scrollHeight;
