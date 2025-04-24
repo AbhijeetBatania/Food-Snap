@@ -162,7 +162,6 @@ function updateLanguage() {
   document.querySelector('label[for="dairyFree"]').textContent = trans.dairyFree;
   document.querySelector('label[for="nutFree"]').textContent = trans.nutFree;
   document.querySelector('label[for="otherDiet"]').textContent = trans.otherDiet;
-  document.querySelector('label[for="otherDietText"]').textContent = trans.pleaseSpecify;
   document.querySelector('label[for="audioOutput"]').textContent = trans.audioOutput;
   document.querySelector('label[for="audioSpeed"]').textContent = trans.audioSpeed;
   languageBtn.textContent = trans.changeLanguage;

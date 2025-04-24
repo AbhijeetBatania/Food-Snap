@@ -19,21 +19,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const audioPlayer = document.getElementById('audioPlayer');
     const overlay = document.getElementById('overlay');
     
-    // Function to open audio player
-    function openAudioPlayer() {
-        audioPlayerContainer.classList.add('active');
-        overlay.style.display = 'block';
-        // Reset audio to beginning
-        audioPlayer.currentTime = 0;
-    }
-    
-    // Function to close audio player
-    function closeAudioPlayerFunc() {
-        audioPlayerContainer.classList.remove('active');
-        overlay.style.display = 'none';
-        // Pause audio when closing
-        audioPlayer.pause();
-    }
+    /// Function to open audio player
+function openAudioPlayer() {
+    audioPlayerContainer.classList.add('active');
+    audioPlayerContainer.style.display = 'block';  // Show the audio player
+    overlay.style.display = 'block';
+    audioPlayer.currentTime = 0;
+}
+
+// Function to close audio player
+function closeAudioPlayerFunc() {
+    audioPlayerContainer.classList.remove('active');
+    audioPlayerContainer.style.display = 'none';  // Hide the audio player
+    overlay.style.display = 'none';
+    audioPlayer.pause();
+}
+
     
     // Event listeners
     audioButton.addEventListener('click', openAudioPlayer);
