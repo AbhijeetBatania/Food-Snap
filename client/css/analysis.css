@@ -391,6 +391,7 @@ footer {
 
 /* Audio Player */
 .audio-player-container {
+    display: none;
     position: fixed;
     bottom: -300px; /* Start off-screen */
     left: 0;
