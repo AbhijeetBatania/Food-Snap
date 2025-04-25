@@ -1,3 +1,34 @@
+import { fetchProductByName, fetchProductByBarcode } from './api/off-api.js';
+
+// Flexible product data loader (search or barcode)
+async function loadProduct(inputType, inputValue) {
+    let result;
+  
+    if (inputType === 'barcode') {
+      result = await fetchProductByBarcode(inputValue);
+    } else if (inputType === 'name') {
+      result = await fetchProductByName(inputValue);
+    }
+  
+    if (result && result.data) {
+      displayProductInfo(result.data);
+    } else {
+      alert("No product found. Try scanning again or entering a different input.");
+    }
+  }
+  
+  // Display logic (edit this to match your UI structure)
+  function displayProductInfo(data) {
+    document.getElementById("product-name").textContent = data.product_name || "Not found";
+    document.getElementById("ingredients").textContent = data.ingredients_text || "Not available";
+    document.getElementById("nutrients").textContent = JSON.stringify(data.nutriments, null, 2);
+  }
+  const inputType = localStorage.getItem("inputType"); // 'name' or 'barcode'
+  const inputValue = localStorage.getItem("inputValue"); // product name or barcode
+  if (inputType && inputValue) {
+    loadProduct(inputType, inputValue);
+  }
+    
 // Audio Player Functionality
 document.addEventListener('DOMContentLoaded', function() {
     const audioButton = document.getElementById('audioButton');
