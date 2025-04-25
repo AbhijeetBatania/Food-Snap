@@ -1,0 +1,82 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Typography and layout */
+  body {
+    font-family: 'Segoe UI', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f8f9fa;
+  }
+  
+  .container {
+    width: 90%;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+  }
+  
+  /* Header */
+  header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 0;
+  }
+  
+  header h1 {
+    margin-bottom: 10px;
+  }
+  
+  nav a {
+    color: white;
+    margin: 0 15px;
+    text-decoration: none;
+  }
+  
+  nav a.active,
+  nav a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Main Section */
+  .privacy-policy {
+    background: white;
+    padding: 30px;
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  }
+  
+  .privacy-policy h2 {
+    color: #4CAF50;
+    margin-bottom: 20px;
+  }
+  
+  .privacy-policy h3 {
+    margin-top: 25px;
+    color: #333;
+  }
+  
+  .privacy-policy p,
+  .privacy-policy ul {
+    margin: 10px 0;
+  }
+  
+  .privacy-policy ul {
+    padding-left: 20px;
+    list-style-type: disc;
+  }
+  
+  /* Footer */
+  footer {
+    background-color: #eee;
+    text-align: center;
+    padding: 20px;
+    margin-top: 30px;
+    font-size: 0.9em;
+    color: #666;
+  }
