@@ -128,11 +128,18 @@ function calculateNeeds(gender, age, height, weight, activityLevel) {
   const multiplier = multipliers[activityLevel] || 1.2;
   const calories = BMR * multiplier;
 
+  function getSodiumNeed(age) {
+    if (age <= 3) return 1000;
+    if (age <= 8) return 1200;
+    if (age <= 13) return 1500;
+    return 1500; // Ideal adult sodium intake
+  }  
+
   const dailyNeeds = {
     energy: `${Math.round(calories)} kcal`,
     protein: `${Math.round(weight * 1.6)} g`,
     fat: `${Math.round((0.25 * calories) / 9)} g`,
-    sodium: `${Math.round(calories * 1.15)} mg`,
+    sodium: `${getSodiumNeed(age)} mg`,
     carbs: `${Math.round((0.5 * calories) / 4)} g`,
     sugar: `${Math.round((0.1 * calories) / 4)} g`,
     fiber: `14 g`,
