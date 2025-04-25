@@ -391,9 +391,8 @@ footer {
 
 /* Audio Player */
 .audio-player-container {
-    display: none;
     position: fixed;
-    bottom: -300px; /* Start off-screen */
+    bottom: -400px; /* fully hidden */
     left: 0;
     right: 0;
     background: white;
@@ -402,10 +401,14 @@ footer {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     transition: bottom 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
 }
 
 .audio-player-container.active {
     bottom: 0;
+    opacity: 1;
+    visibility: visible;
 }
 
 .audio-player-header {
@@ -499,7 +502,7 @@ footer {
         left: 50%;
         transform: translateX(-50%);
         border-radius: 15px;
-        bottom: -350px;
+        bottom: -400px;
     }
     
     .audio-player-container.active {

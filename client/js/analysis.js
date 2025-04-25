@@ -1,16 +1,3 @@
-import { fetchFromOpenFoodFacts } from './api/off-api.js';
-
-window.runProductAnalysis = async function (productName) {
-  const { source, data } = await fetchFromOpenFoodFacts(productName);
-
-  if (data) {
-    document.getElementById("product-name").textContent = data.product_name || "Not found";
-    document.getElementById("ingredients").textContent = data.ingredients_text || "Not available";
-    document.getElementById("nutrients").textContent = JSON.stringify(data.nutriments, null, 2);
-  } else {
-    alert("No product data found.");
-  }
-};
 // Audio Player Functionality
 document.addEventListener('DOMContentLoaded', function() {
     const audioButton = document.getElementById('audioButton');
@@ -20,20 +7,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const overlay = document.getElementById('overlay');
     
     /// Function to open audio player
-function openAudioPlayer() {
-    audioPlayerContainer.classList.add('active');
-    audioPlayerContainer.style.display = 'block';  // Show the audio player
-    overlay.style.display = 'block';
-    audioPlayer.currentTime = 0;
-}
-
-// Function to close audio player
-function closeAudioPlayerFunc() {
-    audioPlayerContainer.classList.remove('active');
-    audioPlayerContainer.style.display = 'none';  // Hide the audio player
-    overlay.style.display = 'none';
-    audioPlayer.pause();
-}
+    function openAudioPlayer() {
+        audioPlayerContainer.classList.add('active');
+        overlay.style.display = 'block';
+        audioPlayer.currentTime = 0;
+    }
+    
+    function closeAudioPlayerFunc() {
+        audioPlayerContainer.classList.remove('active');
+        overlay.style.display = 'none';
+        audioPlayer.pause();
+    }
+    
 
     
     // Event listeners
