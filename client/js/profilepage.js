@@ -1,5 +1,3 @@
-// profilepage.js
-
 import { auth, db } from './firebase-init.js';
 import {
   doc,
@@ -33,9 +31,6 @@ const editHeightInput = document.getElementById('edit-height');
 const editWeightInput = document.getElementById('edit-weight');
 const editActivityInput = document.getElementById('edit-activity');
 
-// Checkboxes for dietary preferences
-const dietaryCheckboxes = ['vegetarian', 'vegan', 'glutenfree', 'dairyfree', 'nutfree', 'otherDiet'];
-
 const fontSizeIndicator = document.getElementById('font-size');
 const decreaseFontBtn = document.getElementById('decrease-font');
 const increaseFontBtn = document.getElementById('increase-font');
@@ -50,14 +45,12 @@ const chatInput = document.getElementById('chat-input-field');
 const sendChatBtn = document.getElementById('send-chat');
 const chatMessages = document.getElementById('chat-messages');
 
-// Your Details
 const detailGender = document.getElementById('detail-gender');
 const detailAge = document.getElementById('detail-age');
 const detailHeight = document.getElementById('detail-height');
 const detailWeight = document.getElementById('detail-weight');
 const detailActivity = document.getElementById('detail-activity');
 
-// Your Daily Needs
 const needFields = {
   energy: document.getElementById('need-energy'),
   fat: document.getElementById('need-fat'),
@@ -70,20 +63,41 @@ const needFields = {
 };
 
 let uid = null;
+let currentProfileData = {}; // 🔁 Used to revert modal if canceled
 
+// Auth
 onAuthStateChanged(auth, async user => {
   if (user) {
     uid = user.uid;
-    const userRef = doc(db, 'users', uid);
-    const snap = await getDoc(userRef);
+    const docRef = doc(db, 'users', uid);
+    const snap = await getDoc(docRef);
     if (snap.exists()) {
       loadProfile(snap.data());
     }
   }
 });
 
+// Load into UI
 function loadProfile(data) {
+  currentProfileData = { ...data };
+
   profileName.textContent = data.fullName || 'Enter Name';
+  profilePhoto.src = localStorage.getItem('userPhotoUrl') || '/public/default-avatar.png';
+  photoPreview.src = profilePhoto.src;
+
+  populateEditForm(data);
+
+  detailGender.textContent = data.gender || 'Not Set';
+  detailAge.textContent = data.age || '--';
+  detailHeight.textContent = data.height ? `${data.height} cm` : '-- cm';
+  detailWeight.textContent = data.weight ? `${data.weight} kg` : '-- kg';
+  detailActivity.textContent = data.activityLevel || 'Not Set';
+
+  calculateNeeds(data.gender, data.age, data.height, data.weight, data.activityLevel);
+}
+
+// Populate Edit Form
+function populateEditForm(data) {
   editNameInput.value = data.fullName || '';
   editEmailInput.value = data.email || '';
   editPhoneInput.value = data.phone || '';
@@ -93,79 +107,54 @@ function loadProfile(data) {
   editHeightInput.value = data.height || '';
   editWeightInput.value = data.weight || '';
   editActivityInput.value = data.activityLevel || '';
-
-  // Check dietary checkboxes
-  if (data.dietaryPreferences) {
-    dietaryCheckboxes.forEach(id => {
-      const checkbox = document.getElementById(id);
-      checkbox.checked = data.dietaryPreferences.includes(id);
-    });
-  }
-
-  detailGender.textContent = data.gender || 'Not Set';
-  detailAge.textContent = data.age ? `${data.age}` : '--';
-  detailHeight.textContent = data.height ? `${data.height} cm` : '-- cm';
-  detailWeight.textContent = data.weight ? `${data.weight} kg` : '-- kg';
-  detailActivity.textContent = data.activityLevel || 'Not Set';
-
-  calculateNeeds(data.gender, data.age, data.height, data.weight, data.activityLevel);
 }
 
+// Daily Needs Calculation
 function calculateNeeds(gender, age, height, weight, activityLevel) {
   if (!height || !weight || !age || !gender) return;
 
   const multipliers = {
-    Sedentary: 1.2,
-    Light: 1.375,
-    Moderate: 1.55,
-    Active: 1.725,
-    'Very active': 1.9
+    sedentary: 1.2,
+    light: 1.375,
+    moderate: 1.55,
+    active: 1.725,
+    'very-active': 1.9
   };
 
-  const BMR = gender === 'Female'
+  const BMR = gender === 'female'
     ? 10 * weight + 6.25 * height - 5 * age - 161
     : 10 * weight + 6.25 * height - 5 * age + 5;
 
   const multiplier = multipliers[activityLevel] || 1.2;
   const calories = BMR * multiplier;
 
-  needFields.energy.textContent = `${Math.round(calories)} kcal`;
-  needFields.protein.textContent = `${Math.round(weight * 1.6)} g`;
-  needFields.fat.textContent = `${Math.round((0.25 * calories) / 9)} g`;
-  needFields.sodium.textContent = `${Math.round(calories * 1.15)} mg`;
-  needFields.carbs.textContent = `${Math.round((0.5 * calories) / 4)} g`;
-  needFields.sugar.textContent = `${Math.round((0.1 * calories) / 4)} g`;
-  needFields.fiber.textContent = `14 g`;
-  needFields.iron.textContent = gender === 'Female' ? '18 mg' : '8 mg';
-}
-
-// Save Profile
-saveBtn.addEventListener('click', async (e) => {
-  e.preventDefault();
-  const updated = {
-    fullName: editNameInput.value,
-    email: editEmailInput.value,
-    phone: editPhoneInput.value,
-    birthdate: editDobInput.value,
-    gender: editGenderInput.value,
-    age: parseInt(editAgeInput.value),
-    height: parseFloat(editHeightInput.value),
-    weight: parseFloat(editWeightInput.value),
-    activityLevel: editActivityInput.value,
-    dietaryPreferences: dietaryCheckboxes.filter(id => document.getElementById(id)?.checked)
+  const dailyNeeds = {
+    energy: `${Math.round(calories)} kcal`,
+    protein: `${Math.round(weight * 1.6)} g`,
+    fat: `${Math.round((0.25 * calories) / 9)} g`,
+    sodium: `${Math.round(calories * 1.15)} mg`,
+    carbs: `${Math.round((0.5 * calories) / 4)} g`,
+    sugar: `${Math.round((0.1 * calories) / 4)} g`,
+    fiber: `14 g`,
+    iron: gender === 'female' ? '18 mg' : '8 mg'
   };
 
-  try {
-    const userRef = doc(db, 'users', uid);
-    await setDoc(userRef, updated, { merge: true });
-    loadProfile(updated);
-    closeModal(editProfileModal);
-  } catch (err) {
-    alert('Error saving profile: ' + err.message);
-  }
-});
+  Object.entries(dailyNeeds).forEach(([key, value]) => {
+    if (needFields[key]) {
+      needFields[key].textContent = value;
+    }
+  });
 
-// Modal logic
+  // 🧠 Save to Firestore silently
+  if (uid) {
+    setDoc(doc(db, 'users', uid), {
+      dailyNeeds: dailyNeeds,
+      timestamp: new Date().toISOString()
+    }, { merge: true });
+  }
+}
+
+// Edit Modal
 function openModal(modal) {
   modal.classList.add('show');
   document.body.style.overflow = 'hidden';
@@ -174,11 +163,51 @@ function closeModal(modal) {
   modal.classList.remove('show');
   document.body.style.overflow = '';
 }
-editProfileBtn.addEventListener('click', () => openModal(editProfileModal));
-closeModalButtons.forEach(btn => btn.addEventListener('click', () => closeModal(btn.closest('.modal'))));
-cancelBtn.addEventListener('click', () => closeModal(editProfileModal));
 
-// Photo upload
+// Button Listeners
+editProfileBtn.addEventListener('click', () => {
+  populateEditForm(currentProfileData);
+  openModal(editProfileModal);
+});
+closeModalButtons.forEach(btn =>
+  btn.addEventListener('click', () => {
+    populateEditForm(currentProfileData);
+    closeModal(btn.closest('.modal'));
+  })
+);
+cancelBtn.addEventListener('click', () => {
+  populateEditForm(currentProfileData);
+  closeModal(editProfileModal);
+});
+
+// Save Profile
+saveBtn.addEventListener('click', async () => {
+  const updatedData = {
+    fullName: editNameInput.value,
+    email: editEmailInput.value,
+    phone: editPhoneInput.value,
+    birthdate: editDobInput.value,
+    gender: editGenderInput.value,
+    age: parseFloat(editAgeInput.value),
+    height: parseFloat(editHeightInput.value),
+    weight: parseFloat(editWeightInput.value),
+    activityLevel: editActivityInput.value
+  };
+
+  try {
+    await setDoc(doc(db, 'users', uid), {
+      ...updatedData,
+      timestamp: new Date().toISOString()
+    }, { merge: true });
+
+    loadProfile(updatedData);
+    closeModal(editProfileModal);
+  } catch (err) {
+    alert('Error saving profile: ' + err.message);
+  }
+});
+
+// Photo Upload
 photoOverlay.addEventListener('click', () => photoUpload.click());
 photoUpload.addEventListener('change', e => {
   const file = e.target.files[0];
@@ -192,7 +221,7 @@ photoUpload.addEventListener('change', e => {
   reader.readAsDataURL(file);
 });
 
-// Font and dark mode
+// Font & Mode
 increaseFontBtn.addEventListener('click', () => adjustFont(1));
 decreaseFontBtn.addEventListener('click', () => adjustFont(-1));
 function adjustFont(change) {
@@ -200,9 +229,11 @@ function adjustFont(change) {
   size = Math.min(Math.max(size + change, 12), 24);
   document.documentElement.style.fontSize = `${size}px`;
   fontSizeIndicator.textContent = size;
+  localStorage.setItem('fontSize', size);
 }
 darkModeToggle.addEventListener('change', () => {
   document.body.classList.toggle('dark-mode', darkModeToggle.checked);
+  localStorage.setItem('darkMode', darkModeToggle.checked);
 });
 audioToggle.addEventListener('change', () => {
   localStorage.setItem('audioEnabled', audioToggle.checked);
@@ -212,10 +243,11 @@ languageButtons.forEach(btn => {
     languageButtons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     localStorage.setItem('language', btn.dataset.lang);
+    // Optional: implement language switching logic
   });
 });
 
-// Chat support
+// Chat Support
 supportBtn.addEventListener('click', () => openModal(supportModal));
 closeSupport.addEventListener('click', () => closeModal(supportModal));
 sendChatBtn.addEventListener('click', sendMessage);
