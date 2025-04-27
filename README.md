@@ -127,7 +127,7 @@ Hosting: GitHub Pages / Firebase Hosting (optional)
 ### Local Setup:
 bash
 # Clone the repo
-git clone https://github.com/your-team/project-name
+git clone https://github.com/AbhijeetBatania/Food-Snap.git
 
 # Install dependencies
 cd project-name
