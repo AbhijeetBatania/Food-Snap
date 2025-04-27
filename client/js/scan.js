@@ -1,10 +1,29 @@
 import { auth, db } from './firebase-init.js';
-import {
-  collection,
-  addDoc,
-  serverTimestamp
-} from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js';
+import { collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js';
 
+// 🛠 New: OpenFoodFacts Fetch Function
+async function fetchOpenFoodFacts(barcode) {
+  try {
+    const response = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
+    const data = await response.json();
+    return data.status === 1 ? data.product : null;
+  } catch {
+    return null;
+  }
+}
+
+// 🛠 New: Handle Barcode Scanned
+async function handleBarcodeScanned(barcode) {
+  const product = await fetchOpenFoodFacts(barcode);
+  if (product) {
+    localStorage.setItem('selectedProduct', JSON.stringify(product));
+    window.location.href = 'analysis.html'; // Redirect for analysis
+  } else {
+    alert("Product not found in OpenFoodFacts, please scan again or upload nutrition label.");
+  }
+}
+
+// UI References
 const videoPreview = document.getElementById('video-preview');
 const capturedImage = document.getElementById('captured-image');
 const scanBtn = document.getElementById('scan-btn');
@@ -12,6 +31,7 @@ const optionsContainer = document.getElementById('options-container');
 const reScanBtn = document.getElementById('re-scan-btn');
 const nextBtn = document.getElementById('next-btn');
 const cameraIcon = document.getElementById('camera-icon');
+const step0 = document.getElementById('step0');
 const step1 = document.getElementById('step1');
 const step2 = document.getElementById('step2');
 const scanTitle = document.getElementById('scan-title');
@@ -22,10 +42,11 @@ const ocrResult = document.getElementById('ocr-result');
 const ocrText = document.getElementById('ocr-text');
 const resultHeader = document.getElementById('result-header');
 
-let currentStep = 1;
+let currentStep = 0;
 let stream = null;
 let isScanning = false;
 
+// Initialize Camera
 async function initScanner() {
   try {
     stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
@@ -39,6 +60,7 @@ async function initScanner() {
   }
 }
 
+// Stop Camera
 function stopScanner() {
   if (stream) {
     stream.getTracks().forEach(track => track.stop());
@@ -47,6 +69,7 @@ function stopScanner() {
   }
 }
 
+// Capture Scan from Camera
 function simulateScan() {
   if (!isScanning) return;
   scanBtn.style.display = 'none';
@@ -58,8 +81,8 @@ function simulateScan() {
     canvas.height = videoPreview.videoHeight;
     const ctx = canvas.getContext('2d');
     ctx.drawImage(videoPreview, 0, 0, canvas.width, canvas.height);
-    const base64Image = canvas.toDataURL('image/jpeg').split(',')[1];
 
+    const base64Image = canvas.toDataURL('image/jpeg').split(',')[1];
     capturedImage.src = canvas.toDataURL('image/png');
     capturedImage.style.display = 'block';
     videoPreview.style.display = 'none';
@@ -72,9 +95,10 @@ function simulateScan() {
   }, 1500);
 }
 
+// Process Uploaded Image
 function processUploadedImage(file) {
   if (!file.type.match('image.*')) {
-    alert('Please select an image file');
+    alert('Please select an image file.');
     return;
   }
 
@@ -98,6 +122,7 @@ function processUploadedImage(file) {
   reader.readAsDataURL(file);
 }
 
+// OCR Extraction
 async function extractTextFromImage(base64Image, isUpload = false) {
   try {
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
@@ -111,7 +136,7 @@ async function extractTextFromImage(base64Image, isUpload = false) {
         messages: [{
           role: "user",
           content: [
-            { type: "text", text: "Extract the food label or nutrition values from this image." },
+            { type: "text", text: "Extract the barcode, food label or nutrition values from this image based on the context." },
             { type: "image_url", image_url: { url: `data:image/jpeg;base64,${base64Image}` } }
           ]
         }],
@@ -125,12 +150,24 @@ async function extractTextFromImage(base64Image, isUpload = false) {
 
     const lines = result.split('\n').filter(line => line.trim().length > 0);
     ocrText.innerHTML = lines.map(line => `<div class="ocr-line">${line.trim()}</div>`).join('');
-    resultHeader.textContent = currentStep === 1 ? "Label Information:" : "Nutritional Value:";
+
+    resultHeader.textContent =
+      currentStep === 0 ? "Barcode Detected:" :
+      currentStep === 1 ? "Label Information:" :
+      "Nutritional Value:";
+
     ocrResult.style.display = 'block';
+
+    if (currentStep === 0) {
+      const barcode = result.match(/\d{8,13}/)?.[0]; // Extract barcode (8-13 digits)
+      if (barcode) {
+        await handleBarcodeScanned(barcode);
+        return; // Don't continue normal flow if barcode found
+      }
+    }
 
     saveScanToFirestore(`data:image/jpeg;base64,${base64Image}`, result);
 
-    // If uploaded, show final "Done" redirection
     if (isUpload && currentStep === 2) {
       nextBtn.textContent = "Done";
     }
@@ -141,7 +178,8 @@ async function extractTextFromImage(base64Image, isUpload = false) {
   }
 }
 
-async function saveScanToFirestore(imageData, nutritionText) {
+// Save Scan Data to Firebase
+async function saveScanToFirestore(imageData, extractedText) {
   try {
     const user = auth.currentUser;
     if (!user) return console.warn('User not logged in. Cannot save scan.');
@@ -149,7 +187,7 @@ async function saveScanToFirestore(imageData, nutritionText) {
     const scanRef = collection(db, 'users', user.uid, 'scans');
     await addDoc(scanRef, {
       image: imageData,
-      nutrition: nutritionText,
+      nutrition: extractedText,
       timestamp: serverTimestamp()
     });
 
@@ -159,6 +197,7 @@ async function saveScanToFirestore(imageData, nutritionText) {
   }
 }
 
+// Reset Camera
 function resetScanner() {
   capturedImage.style.display = 'none';
   optionsContainer.style.display = 'none';
@@ -167,24 +206,40 @@ function resetScanner() {
   initScanner();
 }
 
+// Move to Next Step
 function moveToNextStep() {
-  currentStep = 2;
-  step1.classList.remove('active');
-  step2.classList.add('active');
-  scanTitle.textContent = 'Scan Nutritional Info';
-  scanInstructions.textContent = 'Scan or upload the nutrition label for more details.';
+  if (currentStep === 0) {
+    currentStep = 1;
+    step0.classList.remove('active');
+    step1.classList.add('active');
+    scanTitle.textContent = 'Scan Food Label';
+    scanInstructions.textContent = 'Scan or upload the product label.';
+  } else if (currentStep === 1) {
+    currentStep = 2;
+    step1.classList.remove('active');
+    step2.classList.add('active');
+    scanTitle.textContent = 'Scan Nutritional Info';
+    scanInstructions.textContent = 'Scan or upload the nutrition label.';
+    nextBtn.textContent = "Done";
+  } else {
+    completeScanning();
+    return;
+  }
   resetScanner();
-  nextBtn.textContent = "Done";
 }
 
+// Complete Scanning
 function completeScanning() {
   window.location.href = 'analysis.html';
 }
 
+// Event Listeners
 scanBtn.addEventListener('click', () => !isScanning ? initScanner() : simulateScan());
 reScanBtn.addEventListener('click', resetScanner);
-nextBtn.addEventListener('click', () => currentStep === 1 ? moveToNextStep() : completeScanning());
-fileUpload.addEventListener('change', e => e.target.files[0] && processUploadedImage(e.target.files[0]));
+nextBtn.addEventListener('click', moveToNextStep);
+fileUpload.addEventListener('change', (e) => {
+  if (e.target.files[0]) processUploadedImage(e.target.files[0]);
+});
 
 document.addEventListener('DOMContentLoaded', () => {
   cameraIcon.style.display = 'block';

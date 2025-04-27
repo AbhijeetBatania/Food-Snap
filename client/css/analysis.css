@@ -7,31 +7,31 @@
     --light: #ecf0f1;
     --dark: #2c3e50;
     --gray: #95a5a6;
-}
-
-* {
+  }
+  
+  * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-}
-
-body {
+  }
+  
+  body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f7f9fc;
     color: #333;
     line-height: 1.6;
-}
-
-.container {
+  }
+  
+  .container {
     max-width: 100%;
     margin: 0 auto;
     background: white;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-header {
+  }
+  
+  header {
     background: linear-gradient(135deg, #2980b9, #1a5276);
     color: white;
     padding: 20px;
@@ -39,29 +39,29 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-}
-
-.header-content {
+  }
+  
+  .header-content {
     flex: 1;
-}
-
-h1, h2, h3 {
+  }
+  
+  h1, h2, h3 {
     margin: 0;
     font-weight: 600;
-}
-
-.product-title {
+  }
+  
+  .product-title {
     font-size: 1.5rem;
     margin-bottom: 5px;
-}
-
-.product-subtitle {
+  }
+  
+  .product-subtitle {
     font-size: 0.9rem;
     opacity: 0.8;
     font-weight: normal;
-}
-
-.audio-button {
+  }
+  
+  .audio-button {
     background: rgba(255, 255, 255, 0.2);
     border: none;
     color: white;
@@ -73,30 +73,30 @@ h1, h2, h3 {
     justify-content: center;
     cursor: pointer;
     transition: all 0.2s ease;
-}
-
-.audio-button:hover {
+  }
+  
+  .audio-button:hover {
     background: rgba(255, 255, 255, 0.3);
-}
-
-.audio-button i {
+  }
+  
+  .audio-button i {
     font-size: 1.2rem;
-}
-
-.section {
+  }
+  
+  .section {
     padding: 20px;
     border-bottom: 1px solid rgba(0,0,0,0.05);
-}
-
-.section-title {
+  }
+  
+  .section-title {
     font-size: 1.2rem;
     margin-bottom: 15px;
     color: var(--primary);
     display: flex;
     align-items: center;
-}
-
-.section-title i {
+  }
+  
+  .section-title i {
     margin-right: 8px;
     width: 24px;
     height: 24px;
@@ -107,17 +107,17 @@ h1, h2, h3 {
     border-radius: 50%;
     color: var(--secondary);
     font-size: 0.9rem;
-}
-
-/* Overall Rating */
-.rating-container {
+  }
+  
+  /* Overall Rating */
+  .rating-container {
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
     align-items: center;
-}
-
-.rating-circle {
+  }
+  
+  .rating-circle {
     width: 80px;
     height: 80px;
     border-radius: 50%;
@@ -130,36 +130,36 @@ h1, h2, h3 {
     align-items: center;
     justify-content: center;
     margin-bottom: 20px;
-}
-
-.rating-circle::before {
+  }
+  
+  .rating-circle::before {
     content: '';
     width: 65px;
     height: 65px;
     background: white;
     border-radius: 50%;
     position: absolute;
-}
-
-.rating-number {
+  }
+  
+  .rating-number {
     position: relative;
     z-index: 1;
     font-size: 2rem;
     font-weight: bold;
     color: var(--primary);
-}
-
-.rating-scale {
+  }
+  
+  .rating-scale {
     width: 100%;
-}
-
-.rating-scale p {
+  }
+  
+  .rating-scale p {
     margin: 0 0 10px;
     font-weight: 500;
     text-align: center;
-}
-
-.rating-bar {
+  }
+  
+  .rating-bar {
     height: 8px;
     width: 100%;
     background: linear-gradient(to right, 
@@ -170,9 +170,9 @@ h1, h2, h3 {
         var(--success) 100%);
     border-radius: 4px;
     position: relative;
-}
-
-.rating-marker {
+  }
+  
+  .rating-marker {
     position: absolute;
     top: -6px;
     left: 75%;
@@ -182,217 +182,218 @@ h1, h2, h3 {
     border: 2px solid var(--primary);
     border-radius: 50%;
     transform: translateX(-50%);
-}
-
-.rating-labels {
+  }
+  
+  .rating-labels {
     display: flex;
     justify-content: space-between;
     margin-top: 8px;
     font-size: 10px;
     color: var(--gray);
-}
-
-/* Nutritional Facts */
-.nutrition-grid {
+  }
+  
+  /* Nutritional Facts */
+  .nutrition-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-}
-
-.nutrition-card {
+  }
+  
+  .nutrition-card {
     background: var(--light);
     border-radius: 8px;
     padding: 12px;
     display: flex;
     flex-direction: column;
-}
-
-.highlight-card {
+  }
+  
+  .highlight-card {
     border-left: 3px solid var(--danger);
-}
-
-.nutrition-name {
+  }
+  
+  .nutrition-name {
     font-weight: 500;
     margin-bottom: 6px;
     color: var(--primary);
     font-size: 0.9rem;
-}
-
-.nutrition-value {
+  }
+  
+  .nutrition-value {
     font-size: 1.2rem;
     font-weight: bold;
     margin-bottom: 4px;
-}
-
-.nutrition-context {
+  }
+  
+  .nutrition-context {
     font-size: 0.75rem;
     color: var(--gray);
-}
-
-.highlight-card .nutrition-context {
+  }
+  
+  .highlight-card .nutrition-context {
     color: var(--danger);
-}
-
-/* Ingredients Analysis */
-.ingredient-item {
+  }
+  
+  /* Ingredients Analysis */
+  .ingredient-item {
     margin-bottom: 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid rgba(0,0,0,0.05);
-}
-
-.ingredient-item:last-child {
+  }
+  
+  .ingredient-item:last-child {
     border-bottom: none;
-}
-
-.ingredient-header {
+  }
+  
+  .ingredient-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 8px;
     flex-wrap: wrap;
     gap: 8px;
-}
-
-.ingredient-name {
+  }
+  
+  .ingredient-name {
     font-weight: 500;
     font-size: 0.95rem;
-}
-
-.ingredient-tag {
+  }
+  
+  .ingredient-tag {
     padding: 3px 8px;
     border-radius: 25px;
     font-size: 0.7rem;
     font-weight: 500;
-}
-
-.tag-high-risk {
+  }
+  
+  .tag-high-risk {
     background-color: rgba(231, 76, 60, 0.1);
     color: var(--danger);
-}
-
-.tag-caution {
+  }
+  
+  .tag-caution {
     background-color: rgba(243, 156, 18, 0.1);
     color: var(--warning);
-}
-
-.tag-safe {
+  }
+  
+  .tag-safe {
     background-color: rgba(46, 204, 113, 0.1);
     color: var(--success);
-}
-
-.ingredient-desc {
+  }
+  
+  .ingredient-desc {
     font-size: 0.85rem;
     color: #555;
     padding-left: 8px;
     border-left: 3px solid #eee;
-}
-
-/* Dietary Preferences */
-.dietary-grid {
+  }
+  
+  /* Dietary Preferences */
+  .dietary-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
     margin-top: 15px;
-}
-
-.dietary-item {
+  }
+  
+  .dietary-item {
     display: flex;
     align-items: center;
     padding: 10px;
     background: #f8f9fa;
     border-radius: 8px;
     border-left: 3px solid var(--gray);
-}
-
-.dietary-item .dietary-status.status-yes ~ .dietary-item {
+  }
+  
+  .dietary-item .dietary-status.status-yes ~ .dietary-item {
     border-left-color: var(--success);
-}
-
-.dietary-icon {
+  }
+  
+  .dietary-icon {
     margin-right: 10px;
     font-size: 1rem;
     color: var(--primary);
     width: 20px;
     text-align: center;
-}
-
-.dietary-name {
+  }
+  
+  .dietary-name {
     flex: 1;
     font-size: 0.9rem;
-}
-
-.dietary-status {
+  }
+  
+  .dietary-status {
     font-weight: 500;
     font-size: 0.85rem;
-}
-
-.status-yes {
+  }
+  
+  .status-yes {
     color: var(--success);
-}
-
-.status-no {
+  }
+  
+  .status-no {
     color: var(--danger);
-}
-
-/* Alerts */
-.alert {
+  }
+  
+  /* Alerts */
+  .alert {
     padding: 15px;
     border-radius: 8px;
     margin: 15px 0;
     display: flex;
     align-items: flex-start;
-}
-
-.alert-warning {
+  }
+  
+  .alert-warning {
     background-color: rgba(243, 156, 18, 0.1);
     border-left: 4px solid var(--warning);
-}
-
-.alert-danger {
+  }
+  
+  .alert-danger {
     background-color: rgba(231, 76, 60, 0.1);
     border-left: 4px solid var(--danger);
-}
-
-.alert-icon {
+  }
+  
+  .alert-icon {
     margin-right: 12px;
     font-size: 1.1rem;
     color: var(--warning);
     width: 20px;
     text-align: center;
-}
-
-.alert-danger .alert-icon {
+  }
+  
+  .alert-danger .alert-icon {
     color: var(--danger);
-}
-
-.alert-content {
+  }
+  
+  .alert-content {
     flex: 1;
-}
-
-.alert-title {
+  }
+  
+  .alert-title {
     font-weight: 600;
     margin-bottom: 5px;
     font-size: 0.95rem;
-}
-
-.alert-text {
+  }
+  
+  .alert-text {
     font-size: 0.85rem;
     color: #555;
-}
-
-/* Footer */
-footer {
+  }
+  
+  /* Footer */
+  footer {
     padding: 15px 20px;
     text-align: center;
     font-size: 0.75rem;
     color: var(--gray);
     background: #f8f9fa;
-}
-
-/* Audio Player */
-.audio-player-container {
+  }
+  
+  /* Audio Player */
+  .audio-player-container {
+    display: none;
     position: fixed;
-    bottom: -400px; /* fully hidden */
+    bottom: -300px; /* Start off-screen */
     left: 0;
     right: 0;
     background: white;
@@ -401,61 +402,57 @@ footer {
     border-top-left-radius: 15px;
     border-top-right-radius: 15px;
     transition: bottom 0.3s ease;
-    opacity: 0;
-    visibility: hidden;
-}
-
-.audio-player-container.active {
+  }
+  
+  .audio-player-container.active {
     bottom: 0;
-    opacity: 1;
-    visibility: visible;
-}
-
-.audio-player-header {
+  }
+  
+  .audio-player-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 15px 20px;
     border-bottom: 1px solid #eee;
-}
-
-.close-button {
+  }
+  
+  .close-button {
     background: none;
     border: none;
     color: var(--dark);
     font-size: 1.2rem;
     cursor: pointer;
-}
-
-.audio-player-content {
+  }
+  
+  .audio-player-content {
     padding: 20px;
-}
-
-.audio-player-content audio {
+  }
+  
+  .audio-player-content audio {
     width: 100%;
     margin-bottom: 15px;
-}
-
-.audio-transcript {
+  }
+  
+  .audio-transcript {
     background: #f9f9f9;
     padding: 15px;
     border-radius: 8px;
     margin-top: 15px;
-}
-
-.transcript-heading {
+  }
+  
+  .transcript-heading {
     font-weight: 600;
     margin-bottom: 10px;
     font-size: 0.9rem;
-}
-
-.audio-transcript p:not(.transcript-heading) {
+  }
+  
+  .audio-transcript p:not(.transcript-heading) {
     font-size: 0.85rem;
     line-height: 1.5;
     color: #666;
-}
-
-.overlay {
+  }
+  
+  .overlay {
     position: fixed;
     top: 0;
     left: 0;
@@ -464,10 +461,10 @@ footer {
     background: rgba(0,0,0,0.5);
     z-index: 999;
     display: none;
-}
-
-/* Responsive Styles */
-@media (min-width: 768px) {
+  }
+  
+  /* Responsive Styles */
+  @media (min-width: 768px) {
     .container {
         max-width: 700px;
         margin: 20px auto;
@@ -502,10 +499,67 @@ footer {
         left: 50%;
         transform: translateX(-50%);
         border-radius: 15px;
-        bottom: -400px;
+        bottom: -350px;
     }
     
     .audio-player-container.active {
         bottom: 20px;
     }
-}
+  }
+  .serving-input {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+  }
+  
+  .serving-message {
+    font-size: 0.75rem;
+    color: var(--gray);
+    margin-left: 5px;
+  }
+  .ingredient-analysis-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  
+  .ingredient-analysis-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 10px;
+    background: #f8f8f8;
+    border-radius: 8px;
+  }
+  
+  .ingredient-name-only {
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .ingredient-status {
+    font-size: 0.85rem;
+    padding: 3px 8px;
+    border-radius: 12px;
+    text-align: center;
+    min-width: 100px;
+  }
+  
+  .ingredient-status.good {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .ingredient-status.moderate {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  .ingredient-status.bad {
+    background-color: #f8d7da;
+    color: #721c24;
+  }

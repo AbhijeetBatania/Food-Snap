@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FoodSnap - Scan</title>
   <link rel="stylesheet" href="../css/scan.css" />
   <link rel="stylesheet" href="../css/common.css" />
@@ -20,24 +20,40 @@
         </div>
       </header>
 
+      <!-- Step Indicator Updated with Step 0 -->
       <div class="step-indicator">
-        <div class="step active" id="step1"><div class="step-circle">1</div><div class="step-label">Scan Label</div></div>
-        <div class="step" id="step2"><div class="step-circle">2</div><div class="step-label">Scan Nutrition</div></div>
+        <div class="step active" id="step0">
+          <div class="step-circle">0</div>
+          <div class="step-label">Scan Barcode</div>
+        </div>
+        <div class="step" id="step1">
+          <div class="step-circle">1</div>
+          <div class="step-label">Scan Label</div>
+        </div>
+        <div class="step" id="step2">
+          <div class="step-circle">2</div>
+          <div class="step-label">Scan Nutrition</div>
+        </div>
       </div>
 
-      <h1 id="scan-title">Scan Food Label</h1>
-      <p class="instructions" id="scan-instructions">Point your camera at the product label to extract label or nutritional data.</p>
+      <!-- Title and Instructions -->
+      <h1 id="scan-title">Scan Product Barcode</h1>
+      <p class="instructions" id="scan-instructions">Point your camera at the barcode to extract product barcode.</p>
 
+      <!-- Scan Container -->
       <div class="scan-container">
         <div id="video-container">
           <div id="camera-icon">📷</div>
           <video id="video-preview" autoplay playsinline></video>
           <img id="captured-image" src="" alt="Captured image">
         </div>
-        <div class="scan-overlay"><div class="scan-frame"></div></div>
+        <div class="scan-overlay">
+          <div class="scan-frame"></div>
+        </div>
         <p class="scan-text">Tap the button below to scan or upload an image</p>
       </div>
 
+      <!-- Upload Option -->
       <div class="upload-option">
         <label for="file-upload" class="upload-label">
           <svg width="16" height="16" viewBox="0 0 24 24">
@@ -48,6 +64,7 @@
         <input type="file" id="file-upload" accept="image/*" hidden>
       </div>
 
+      <!-- Scan Button -->
       <button class="btn" id="scan-btn">
         <svg width="20" height="20" viewBox="0 0 24 24">
           <path d="M12 15v5m-3-5v5m6-5v5M4 8V5a1 1 0 011-1h14a1 1 0 011 1v3M4 8h16M4 8v11a1 1 0 001 1h14a1 1 0 001-1V8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -55,20 +72,24 @@
         Scan Product
       </button>
 
+      <!-- Options after Scan -->
       <div class="options-container" id="options-container">
         <button class="option-btn re-scan-btn" id="re-scan-btn">Re-scan</button>
         <button class="option-btn next-btn" id="next-btn">Next</button>
       </div>
 
+      <!-- Loading Spinner -->
       <div class="loading" id="loading">
         <div class="loading-spinner"></div>
         <p>Processing scan...</p>
       </div>
 
+      <!-- OCR Result Display -->
       <div id="ocr-result" class="ocr-result">
         <h3 id="result-header">Extracted Info</h3>
         <div id="ocr-text">No data extracted yet...</div>
       </div>
+
     </div>
   </div>
 

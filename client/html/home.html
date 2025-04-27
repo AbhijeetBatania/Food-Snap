@@ -28,13 +28,26 @@
       </header>
       
       <!-- Search Bar -->
-      <div class="search-container">
-        <div class="search-bar">
-          <i class="fa-solid fa-search search-icon"></i>
-          <input type="text" placeholder="Search food items by name or barcode number..." class="search-input">
-          <button class="mic-button"><i class="fa-solid fa-microphone"></i></button>
-        </div>
-      </div>
+<!-- Search Bar -->
+<div class="search-container" style="position: relative;">
+  <div class="search-bar">
+    <i class="fa-solid fa-search search-icon"></i>
+    <input
+      type="text"
+      id="searchInput"
+      placeholder="Search food items by name or barcode..."
+      class="search-input"
+      autocomplete="off"
+    />
+    <div class="search-buttons">
+      <button class="clear-button" id="clearSearch"><i class="fa-solid fa-xmark"></i></button>
+      <span class="divider"></span>
+      <button class="mic-button" id="micBtn"><i class="fa-solid fa-microphone"></i></button>
+    </div>
+  </div>
+  <ul class="suggestions-list" id="suggestionsList"></ul>
+</div>
+
       
       <!-- Main Content -->
       <main class="main-content">
@@ -61,29 +74,9 @@
               <h3><i class="fa-solid fa-history"></i> Recent</h3>
               <button class="text-button" id="viewAllButton">View All</button>
             </div>
-            <div class="scanned-items">
-              <div class="scanned-item">
-                <div class="item-header">
-                  <span>Greek Yogurt</span>
-                  <span class="date">Today</span>
-                </div>
-                <p>Protein: 15g, Sugar: 6g</p>
-              </div>
-              <div class="scanned-item">
-                <div class="item-header">
-                  <span>Almond Milk</span>
-                  <span class="date">Yesterday</span>
-                </div>
-                <p>Calories: 30, Fat: 2.5g</p>
-              </div>
-              <div class="scanned-item">
-                <div class="item-header">
-                  <span>Protein Bar</span>
-                  <span class="date">2 days ago</span>
-                </div>
-                <p>Protein: 20g, Carbs: 22g</p>
-              </div>
-            </div>
+            <div class="scanned-items" id="recentlyScanned">
+              <p id="noHistoryMessage" style="display: none; text-align: center;">No history yet.</p>
+            </div>            
           </section>
           
           <!-- Knowledge Hub -->

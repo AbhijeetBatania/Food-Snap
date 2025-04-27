@@ -116,19 +116,6 @@ a {
   outline: none;
 }
 
-.mic-button {
-  background: transparent;
-  border: none;
-  color: var(--color-blue);
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
 .icon-button {
   background: transparent;
   border: none;
@@ -146,6 +133,71 @@ a {
 .icon-button:hover {
   background-color: var(--color-gray);
 }
+.suggestions-list {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  background: var(--color-white);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 10px;
+  max-height: 260px;
+  overflow-y: auto;
+  position: absolute;
+  top: 100%;
+  left: 16px;
+  right: 16px;
+  z-index: 1000;
+}
+
+.suggestions-list li {
+  display: flex;
+  align-items: center;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.suggestions-list li:hover {
+  background: #f0f0f0;
+}
+
+.suggestions-list img {
+  width: 38px;
+  height: 38px;
+  object-fit: cover;
+  margin-right: 10px;
+  border-radius: 6px;
+}
+
+.search-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.clear-button,
+.mic-button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  padding: 4px;
+}
+
+.clear-button:hover,
+.mic-button:hover {
+  color: var(--color-accent);
+}
+
+.divider {
+  width: 1px;
+  height: 20px;
+  background-color: #ccc;
+} 
 
 /* Main Content */
 .main-content {
