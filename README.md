@@ -134,10 +134,20 @@ cd project-name
 npm install
 
 # Start development server
-npm run dev
+For Backend:
+1. Navigate to the server folder:
+   cd server
+2. Install dependencies:
+   npm install
+3. Start the development server:
+   npm run dev
 
+For Frontend:
+- Open client/html/index.html directly in the browser (for local testing)
 
-Provide any backend/frontend split or environment setup notes here.
+## Backend/Frontend Split
+- /client → Frontend (HTML, CSS, JavaScript)
+- /server → Backend (Node.js, Express)
 
 ---
 
