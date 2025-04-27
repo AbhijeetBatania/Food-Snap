@@ -99,7 +99,8 @@ Hosting: GitHub Pages / Firebase Hosting (optional)
 
 ## 📽 Demo & Deliverables
 
-- *Demo Video Link:* https://drive.google.com/file/d/1vZak4ypn4VxvfmeThXa1Y2WwgcunP61L/view?usp=sharing
+- *Demo Video Link 1:* https://youtu.be/qAj5buV0k1M
+- *Demo Video Link 2:* https://drive.google.com/file/d/1vZak4ypn4VxvfmeThXa1Y2WwgcunP61L/view?usp=sharing
 - *Pitch Deck / PPT Link:* https://drive.google.com/file/d/1mXOn28OdXZ9itm3dgzbnMFHuwhYk2gmT/view?usp=sharing
 
 ---
