@@ -119,7 +119,7 @@ Hosting: GitHub Pages / Firebase Hosting (optional)
 ## 🧪 How to Run the Project
 
 ### Requirements:
-- Node.js / Python / Docker / etc.
+- Node.js / Docker / etc.
 - API Keys (if any)
 - .env file setup (if needed)
 
