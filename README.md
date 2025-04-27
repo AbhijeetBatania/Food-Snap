@@ -99,7 +99,8 @@ Hosting: GitHub Pages / Firebase Hosting (optional)
 
 ## 📽 Demo & Deliverables
 
-- *Demo Video Link:* https://drive.google.com/file/d/1vZak4ypn4VxvfmeThXa1Y2WwgcunP61L/view?usp=sharing
+- *Demo Video Link 1:* https://youtu.be/qAj5buV0k1M
+- *Demo Video Link 2:* https://drive.google.com/file/d/1vZak4ypn4VxvfmeThXa1Y2WwgcunP61L/view?usp=sharing
 - *Pitch Deck / PPT Link:* https://drive.google.com/file/d/1mXOn28OdXZ9itm3dgzbnMFHuwhYk2gmT/view?usp=sharing
 
 ---
@@ -119,24 +120,34 @@ Hosting: GitHub Pages / Firebase Hosting (optional)
 ## 🧪 How to Run the Project
 
 ### Requirements:
-- Node.js / Python / Docker / etc.
+- Node.js / Docker / etc.
 - API Keys (if any)
 - .env file setup (if needed)
 
 ### Local Setup:
 bash
 # Clone the repo
-git clone https://github.com/your-team/project-name
+git clone https://github.com/AbhijeetBatania/Food-Snap.git
 
 # Install dependencies
 cd project-name
 npm install
 
 # Start development server
-npm run dev
+For Backend:
+1. Navigate to the server folder:
+   cd server
+2. Install dependencies:
+   npm install
+3. Start the development server:
+   npm run dev
 
+For Frontend:
+- Open client/html/index.html directly in the browser (for local testing)
 
-Provide any backend/frontend split or environment setup notes here.
+## Backend/Frontend Split
+- /client → Frontend (HTML, CSS, JavaScript)
+- /server → Backend (Node.js, Express)
 
 ---
 
