@@ -118,9 +118,9 @@ APIs: OpenFoodFacts API (Indian and Global), Groq API (for AI summarization)
 ## 🧪 How to Run the Project
 
 ### Requirements:
-- Node.js / Docker / etc.
-- API Keys (if any)
-- .env file setup (if needed)
+- Node.js (v16 or above recommended)
+- API Keys (for Fluvio, Groq, and Firebase)
+- .env file setup (for backend)
 
 ### Local Setup:
 bash
