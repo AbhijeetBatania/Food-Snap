@@ -69,15 +69,13 @@ Brainstormed on fallback mechanisms (upload image when scan fails) and hybrid fl
 ## 🛠 Tech Stack
 
 ### Core Technologies Used:
-Frontend: HTML5, CSS3, JavaScript (Vanilla), Html5-QRCode library
+Frontend: HTML/CSS, JavaScript
 
 Backend: Node.js (used minimally for API testing), Groq API integration
 
 Database: Firebase Firestore (for saving scanned data, if user logged in)
 
 APIs: OpenFoodFacts API (Indian and Global), Groq API (for AI summarization)
-
-Hosting: GitHub Pages / Firebase Hosting (optional)
 
 ### Sponsor Technologies Used (if any):
 ✅ Groq: Used for barcode image text extraction (OCR) and food data summarization (AI health insights)
